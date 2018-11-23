@@ -1,4 +1,4 @@
-package com.os.dapp.managerapi;
+package com.cc.dapp.managerapi;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
