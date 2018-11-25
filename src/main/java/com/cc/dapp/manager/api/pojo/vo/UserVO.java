@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-@ApiModel(value = "LoginVO", description = "登录VO")
+@ApiModel(value = "AdminLoginVO", description = "登录VO")
 @Data
 public class UserVO {
 

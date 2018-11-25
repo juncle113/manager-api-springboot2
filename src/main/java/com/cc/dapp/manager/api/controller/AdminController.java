@@ -1,7 +1,7 @@
 package com.cc.dapp.manager.api.controller;
 
 import com.cc.dapp.manager.api.pojo.dto.AdminLoginDTO;
-import com.cc.dapp.manager.api.pojo.vo.LoginVO;
+import com.cc.dapp.manager.api.pojo.vo.AdminLoginVO;
 import com.cc.dapp.manager.api.service.AdminService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +22,7 @@ public class AdminController {
     @ApiOperation("登录")
     @PostMapping("/login")
 //    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ResponseEntity<LoginVO> login(@RequestBody @Valid AdminLoginDTO adminLoginDTO) {
+    public ResponseEntity<AdminLoginVO> login(@RequestBody @Valid AdminLoginDTO adminLoginDTO) {
         return adminService.login(adminLoginDTO);
     }
 
