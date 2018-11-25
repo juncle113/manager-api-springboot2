@@ -1,4 +1,4 @@
-package com.cc.dapp.managerapi.config;
+package com.cc.dapp.manager.api.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +19,7 @@ public class Swagger2Configuration {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.cc.dapp.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.cc.dapp.manager.api.controller"))
                 .paths(PathSelectors.any())
                 .build();
     }

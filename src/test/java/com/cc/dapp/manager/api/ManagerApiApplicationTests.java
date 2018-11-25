@@ -1,4 +1,4 @@
-package com.cc.dapp.managerapi;
+package com.cc.dapp.manager.api;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,6 +11,7 @@ public class ManagerApiApplicationTests {
 
     @Test
     public void contextLoads() {
+
     }
 
 }
