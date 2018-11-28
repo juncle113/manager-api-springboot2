@@ -8,9 +8,9 @@ public class LoginException extends RuntimeException{
 
     private ErrorInfo errorInfo;
 
-    public LoginException(ErrorCodeEnum e) {
-        super(e.getMessage());
+    public LoginException() {
+        super(ErrorCodeEnum.ADMIN_LOGIN_ERROR.getMessage());
 
-        this.errorInfo = new ErrorInfo(e.getCode(), e.getMessage());
+        this.errorInfo = new ErrorInfo(ErrorCodeEnum.ADMIN_LOGIN_ERROR.getCode(), ErrorCodeEnum.ADMIN_LOGIN_ERROR.getMessage());
     }
 }
