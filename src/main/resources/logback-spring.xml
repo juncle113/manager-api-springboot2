@@ -21,10 +21,10 @@
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
         </encoder>
     </appender>
-    <root level="ERROR">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"></appender-ref>
     </root>
-    <logger name="com.cc.dapp.service.impl" level="ERROR">
-        <appender-ref ref="syslog" />
-    </logger>
+    <!--<logger name="com.cc.dapp.service.impl" level="ERROR">-->
+        <!--<appender-ref ref="syslog" />-->
+    <!--</logger>-->
 </configuration>

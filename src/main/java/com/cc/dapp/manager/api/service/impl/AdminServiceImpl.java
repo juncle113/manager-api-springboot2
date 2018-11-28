@@ -1,33 +1,36 @@
 package com.cc.dapp.manager.api.service.impl;
 
+import com.cc.dapp.manager.api.exception.AuthorizedException;
 import com.cc.dapp.manager.api.pojo.dto.AdminLoginDTO;
 import com.cc.dapp.manager.api.pojo.vo.AdminLoginVO;
 import com.cc.dapp.manager.api.service.AdminService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AdminServiceImpl implements AdminService {
 
     @Override
-    public ResponseEntity<AdminLoginVO> login(AdminLoginDTO adminLoginDTO) {
+    public AdminLoginVO login(AdminLoginDTO adminLoginDTO) {
 
         if (!adminLoginDTO.getUsername().equals("admin") ||
             !adminLoginDTO.getPassword().equals("abcd1234")) {
-//            throw new Exception();
-            return new ResponseEntity("用户名或密码错误", HttpStatus.UNAUTHORIZED);
+//            throw new AuthorizedException(new ErrorInfo(10001, "权限问题"));
+//            throw new Exception("10001");
+            throw new AuthorizedException();
+
+
+//            throw new BusinessException(ErrorCodeEnum.ADMIN_LOGIN_ERROR);
         }
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setName("admin");
         adminLoginVO.setUsername("管理员");
 
-        return ResponseEntity.ok(adminLoginVO);
+        return adminLoginVO;
     }
 
     @Override
-    public ResponseEntity logout() {
+    public AdminLoginVO logout() {
         return null;
     }
 }
