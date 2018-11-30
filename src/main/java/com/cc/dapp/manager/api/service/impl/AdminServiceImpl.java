@@ -10,6 +10,7 @@ import com.cc.dapp.manager.api.repository.ManagerAdminRepository;
 import com.cc.dapp.manager.api.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 @Service
 public class AdminServiceImpl implements AdminService {
@@ -20,7 +21,8 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminLoginVO login(AdminLoginDTO adminLoginDTO) {
 
-        ManagerAdmin managerAdmin = managerAdminRepository.findByUserNameAndPassword(adminLoginDTO.getUsername(), adminLoginDTO.getPasswordWithMD5());
+        String passwordWithMD5 = DigestUtils.md5DigestAsHex(adminLoginDTO.getPassword().getBytes());
+        ManagerAdmin managerAdmin = managerAdminRepository.findByUserNameAndPassword(adminLoginDTO.getUsername(), passwordWithMD5);
         if(managerAdmin == null) {
             throw new AdminLoginException();
         }
@@ -32,6 +34,7 @@ public class AdminServiceImpl implements AdminService {
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setName(managerAdmin.getName());
         adminLoginVO.setUsername(managerAdmin.getUserName());
+        adminLoginVO.setRoleType(managerAdmin.getRoleType());
 
         return adminLoginVO;
     }

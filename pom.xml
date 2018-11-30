@@ -113,11 +113,6 @@
             <artifactId>springfox-swagger-ui</artifactId>
             <version>${swagger2.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.apache.directory.studio</groupId>-->
-            <!--<artifactId>org.apache.commons.codec</artifactId>-->
-            <!--<version>1.8</version>-->
-        <!--</dependency>-->
 
         <!-- 生成swagger离线文档 -->
         <!--<dependency>-->

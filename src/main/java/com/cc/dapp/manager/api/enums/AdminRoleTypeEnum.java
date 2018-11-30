@@ -3,15 +3,15 @@ package com.cc.dapp.manager.api.enums;
 import lombok.Getter;
 
 @Getter
-public enum AdminStatusEnum {
+public enum AdminRoleTypeEnum {
 
-    VALID(1, "有效"),
-    INVALID(2, "无效");
+    ROOT(1, "超级管理员"),
+    ADMIN(2, "普通管理员");
 
     private int code;
     private String name;
 
-    AdminStatusEnum(int code, String name) {
+    AdminRoleTypeEnum(int code, String name) {
         this.code = code;
         this.name = name;
     }
