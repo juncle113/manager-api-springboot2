@@ -20,8 +20,8 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ LoginException.class })
-    public ResponseEntity handleLoginException(LoginException e) {
+    @ExceptionHandler({ AdminLoginException.class })
+    public ResponseEntity handleLoginException(AdminLoginException e) {
         logger.warn(Constant.LOG_TYPE_LOGIN, e);
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.UNAUTHORIZED);
     }

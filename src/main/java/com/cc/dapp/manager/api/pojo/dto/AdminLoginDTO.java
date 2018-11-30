@@ -3,6 +3,7 @@ package com.cc.dapp.manager.api.pojo.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.util.DigestUtils;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,4 +18,9 @@ public class AdminLoginDTO {
     @ApiModelProperty(value = "密码", required = true, example = "abcd1234")
     @NotBlank(message = "密码不能为空")
     private String password;
+
+    @ApiModelProperty(hidden = true)
+    public String getPasswordWithMD5() {
+        return DigestUtils.md5DigestAsHex(password.getBytes());
+    }
 }
