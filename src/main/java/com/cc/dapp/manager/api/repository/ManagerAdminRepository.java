@@ -5,8 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ManagerAdminRepository extends JpaRepository<ManagerAdmin, Integer> {
 
-    ManagerAdmin findByUserNameAndPassword(String userName, String password);
-
+    ManagerAdmin findByUserNameAndIsDeleted(String userName, Boolean isDeleted);
 
 
 }

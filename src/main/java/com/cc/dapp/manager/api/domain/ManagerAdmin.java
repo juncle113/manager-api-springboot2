@@ -12,7 +12,9 @@ public class ManagerAdmin {
     private String password;
     private String name;
     private Integer roleType;
+    private String remark;
     private Integer status;
+    private Boolean isDeleted;
     private Timestamp createdTime;
     private Integer createdBy;
     private Timestamp modifiedTime;
@@ -70,6 +72,16 @@ public class ManagerAdmin {
     }
 
     @Basic
+    @Column(name = "remark", nullable = true, length = 200)
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @Basic
     @Column(name = "status", nullable = true)
     public Integer getStatus() {
         return status;
@@ -77,6 +89,16 @@ public class ManagerAdmin {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    @Basic
+    @Column(name = "is_deleted", nullable = true)
+    public Boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Boolean isDeleted) {
+        this.isDeleted = isDeleted;
     }
 
     @Basic
@@ -129,7 +151,9 @@ public class ManagerAdmin {
                 Objects.equals(password, that.password) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(roleType, that.roleType) &&
+                Objects.equals(remark, that.remark) &&
                 Objects.equals(status, that.status) &&
+                Objects.equals(isDeleted, that.isDeleted) &&
                 Objects.equals(createdTime, that.createdTime) &&
                 Objects.equals(createdBy, that.createdBy) &&
                 Objects.equals(modifiedTime, that.modifiedTime) &&
@@ -138,6 +162,6 @@ public class ManagerAdmin {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, password, name, roleType, status, createdTime, createdBy, modifiedTime, modifiedBy);
+        return Objects.hash(id, userName, password, name, roleType, remark, status, isDeleted, createdTime, createdBy, modifiedTime, modifiedBy);
     }
 }

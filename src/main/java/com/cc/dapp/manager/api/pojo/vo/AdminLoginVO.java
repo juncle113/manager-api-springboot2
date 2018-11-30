@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 public class AdminLoginVO {
 
-    @ApiModelProperty(value = "管理员id", required = true, example = "1")
+    @ApiModelProperty(value = "id", required = true, example = "1")
     private Integer id;
 
     @ApiModelProperty(value = "token", required = true, example = "abcdefgh12345678")
