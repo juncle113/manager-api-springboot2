@@ -26,5 +26,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.UNAUTHORIZED);
     }
 
+    @ExceptionHandler({ AuthorizedException.class })
+    public ResponseEntity handleLoginException(AuthorizedException e) {
+        logger.warn(Constant.LOG_TYPE_AUTHORIZED, e);
+        return new ResponseEntity(e.getErrorInfo(), HttpStatus.FORBIDDEN);
+    }
+
 
 }

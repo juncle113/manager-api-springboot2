@@ -11,6 +11,6 @@ public class AuthorizedException extends RuntimeException{
     public AuthorizedException() {
         super(ErrorCodeEnum.ADMIN_LOGIN_ERROR.getMessage());
 
-        this.errorInfo = new ErrorInfo(ErrorCodeEnum.ADMIN_LOGIN_ERROR.getCode(), ErrorCodeEnum.ADMIN_LOGIN_ERROR.getMessage());
+        this.errorInfo = new ErrorInfo(ErrorCodeEnum.USER_ACCOUNT_FORBIDDEN.getCode(), ErrorCodeEnum.USER_ACCOUNT_FORBIDDEN.getMessage());
     }
 }

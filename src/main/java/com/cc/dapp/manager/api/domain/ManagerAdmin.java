@@ -11,8 +11,8 @@ public class ManagerAdmin {
     private String userName;
     private String password;
     private String name;
-    private Byte roleType;
-    private Byte status;
+    private Integer roleType;
+    private Integer status;
     private Timestamp createdDate;
     private Integer createdBy;
     private Timestamp modifiedDate;
@@ -60,21 +60,21 @@ public class ManagerAdmin {
 
     @Basic
     @Column(name = "role_type", nullable = true)
-    public Byte getRoleType() {
+    public Integer getRoleType() {
         return roleType;
     }
 
-    public void setRoleType(Byte roleType) {
+    public void setRoleType(Integer roleType) {
         this.roleType = roleType;
     }
 
     @Basic
     @Column(name = "status", nullable = true)
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 
