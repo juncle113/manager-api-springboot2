@@ -13,9 +13,9 @@ public class ManagerAdmin {
     private String name;
     private Integer roleType;
     private Integer status;
-    private Timestamp createdDate;
+    private Timestamp createdTime;
     private Integer createdBy;
-    private Timestamp modifiedDate;
+    private Timestamp modifiedTime;
     private Integer modifiedBy;
 
     @Id
@@ -79,13 +79,13 @@ public class ManagerAdmin {
     }
 
     @Basic
-    @Column(name = "created_date", nullable = true)
-    public Timestamp getCreatedDate() {
-        return createdDate;
+    @Column(name = "created_time", nullable = true)
+    public Timestamp getCreatedTime() {
+        return createdTime;
     }
 
-    public void setCreatedDate(Timestamp createdDate) {
-        this.createdDate = createdDate;
+    public void setCreatedTime(Timestamp createdTime) {
+        this.createdTime = createdTime;
     }
 
     @Basic
@@ -99,13 +99,13 @@ public class ManagerAdmin {
     }
 
     @Basic
-    @Column(name = "modified_date", nullable = true)
-    public Timestamp getModifiedDate() {
-        return modifiedDate;
+    @Column(name = "modified_time", nullable = true)
+    public Timestamp getModifiedTime() {
+        return modifiedTime;
     }
 
-    public void setModifiedDate(Timestamp modifiedDate) {
-        this.modifiedDate = modifiedDate;
+    public void setModifiedTime(Timestamp modifiedTime) {
+        this.modifiedTime = modifiedTime;
     }
 
     @Basic
@@ -129,14 +129,14 @@ public class ManagerAdmin {
                 Objects.equals(name, that.name) &&
                 Objects.equals(roleType, that.roleType) &&
                 Objects.equals(status, that.status) &&
-                Objects.equals(createdDate, that.createdDate) &&
+                Objects.equals(createdTime, that.createdTime) &&
                 Objects.equals(createdBy, that.createdBy) &&
-                Objects.equals(modifiedDate, that.modifiedDate) &&
+                Objects.equals(modifiedTime, that.modifiedTime) &&
                 Objects.equals(modifiedBy, that.modifiedBy);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userName, password, name, roleType, status, createdDate, createdBy, modifiedDate, modifiedBy);
+        return Objects.hash(id, userName, password, name, roleType, status, createdTime, createdBy, modifiedTime, modifiedBy);
     }
 }

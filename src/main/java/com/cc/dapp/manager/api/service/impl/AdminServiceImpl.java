@@ -23,11 +23,11 @@ public class AdminServiceImpl implements AdminService {
 
         String passwordWithMD5 = DigestUtils.md5DigestAsHex(adminLoginDTO.getPassword().getBytes());
         ManagerAdmin managerAdmin = managerAdminRepository.findByUserNameAndPassword(adminLoginDTO.getUsername(), passwordWithMD5);
-        if(managerAdmin == null) {
+        if (managerAdmin == null) {
             throw new AdminLoginException();
         }
 
-        if(AdminStatusEnum.INVALID.getCode() == managerAdmin.getStatus()) {
+        if (AdminStatusEnum.INVALID.getCode() == managerAdmin.getStatus()) {
             throw new AuthorizedException();
         }
 
