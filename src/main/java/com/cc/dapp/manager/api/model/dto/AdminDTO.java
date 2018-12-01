@@ -1,4 +1,4 @@
-package com.cc.dapp.manager.api.pojo.dto;
+package com.cc.dapp.manager.api.model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -26,8 +26,6 @@ public class AdminDTO {
 
     @ApiModelProperty(value = "角色类型（1：超级管理员，2：普通管理员）", required = true, example = "2")
     @NotNull(message = "角色类型不能为空")
-    @Min(value = 1, message = "角色类型错误")
-    @Max(value = 2, message = "角色类型错误")
     private Integer roleType;
 
     @ApiModelProperty(value = "备注", example = "备注内容")
@@ -36,7 +34,9 @@ public class AdminDTO {
 
     @ApiModelProperty(value = "状态(1：启用，2：禁用)", required = true, example = "1")
     @NotNull(message = "状态不能为空")
-    @Min(value = 1, message = "状态错误")
-    @Max(value = 2, message = "状态错误")
     private Integer status;
+
+    @ApiModelProperty(value = "操作人id", required = true, example = "1")
+    @NotNull(message = "操作人id不能为空")
+    private Integer byAdminId;
 }

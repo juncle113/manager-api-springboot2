@@ -1,11 +1,12 @@
 package com.cc.dapp.manager.api.repository;
 
-import com.cc.dapp.manager.api.domain.ManagerAdmin;
+import com.cc.dapp.manager.api.model.domain.ManagerAdmin;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ManagerAdminRepository extends JpaRepository<ManagerAdmin, Integer> {
 
-    ManagerAdmin findByUserNameAndIsDeleted(String userName, Boolean isDeleted);
+    ManagerAdmin findByUserNameAndDeleted(String userName, Boolean deleted);
 
+    int countByUserName(String userName);
 
 }

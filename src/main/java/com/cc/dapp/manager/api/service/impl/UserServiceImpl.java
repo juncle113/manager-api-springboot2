@@ -1,7 +1,7 @@
 package com.cc.dapp.manager.api.service.impl;
 
-import com.cc.dapp.manager.api.pojo.dto.UserDTO;
-import com.cc.dapp.manager.api.pojo.vo.UserVO;
+import com.cc.dapp.manager.api.model.dto.UserDTO;
+import com.cc.dapp.manager.api.model.vo.UserVO;
 import com.cc.dapp.manager.api.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

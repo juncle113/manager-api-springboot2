@@ -5,8 +5,9 @@ import lombok.Getter;
 @Getter
 public enum AdminRoleTypeEnum {
 
-    ROOT(1, "超级管理员"),
-    ADMIN(2, "普通管理员");
+    ROOT(1, "系统管理员"),
+    SUPER_ADMIN(2, "超级管理员"),
+    ADMIN(3, "普通管理员");
 
     private int code;
     private String name;

@@ -1,9 +1,9 @@
 package com.cc.dapp.manager.api.service;
 
-import com.cc.dapp.manager.api.pojo.dto.AdminDTO;
-import com.cc.dapp.manager.api.pojo.dto.AdminLoginDTO;
-import com.cc.dapp.manager.api.pojo.vo.AdminLoginVO;
-import com.cc.dapp.manager.api.pojo.vo.AdminVO;
+import com.cc.dapp.manager.api.model.dto.AdminDTO;
+import com.cc.dapp.manager.api.model.dto.AdminLoginDTO;
+import com.cc.dapp.manager.api.model.vo.AdminLoginVO;
+import com.cc.dapp.manager.api.model.vo.AdminVO;
 
 import java.util.List;
 
@@ -18,4 +18,6 @@ public interface AdminService extends BaseService {
     AdminVO add(AdminDTO adminDTO);
 
     AdminVO modify(Integer adminId, AdminDTO adminDTO);
+
+    void remove(Integer adminId);
 }

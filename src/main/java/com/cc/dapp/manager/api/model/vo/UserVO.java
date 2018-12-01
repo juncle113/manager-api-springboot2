@@ -1,4 +1,4 @@
-package com.cc.dapp.manager.api.pojo.vo;
+package com.cc.dapp.manager.api.model.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

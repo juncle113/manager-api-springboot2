@@ -1,10 +1,10 @@
-package com.cc.dapp.manager.api.pojo.vo;
+package com.cc.dapp.manager.api.model.vo;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.util.Date;
 
 @ApiModel(value = "AdminVO", description = "管理员VO")
 @Data
@@ -35,7 +35,7 @@ public class AdminVO {
     private String statusName;
 
     @ApiModelProperty(value = "创建时间", required = true, example = "2018-11-30 11:22:33")
-    private Timestamp createdTime;
+    private Date createdTime;
 
     @ApiModelProperty(value = "创建人id", required = true, example = "1")
     private Integer createdBy;
@@ -44,7 +44,7 @@ public class AdminVO {
     private String createdByUserName;
 
     @ApiModelProperty(value = "修改时间", required = true, example = "2018-11-30 11:22:33")
-    private Timestamp modifiedTime;
+    private Date modifiedTime;
 
     @ApiModelProperty(value = "修改人id", required = true, example = "1")
     private Integer modifiedBy;

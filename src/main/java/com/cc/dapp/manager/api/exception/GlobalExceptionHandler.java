@@ -32,5 +32,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler({ AccountHasExistedException.class })
+    public ResponseEntity handleLoginException(AccountHasExistedException e) {
+        logger.warn(LogTypeEnum.BUSINESS.getMessage(), e);
+        return new ResponseEntity(e.getErrorInfo(), HttpStatus.CONFLICT);
+    }
+
 
 }

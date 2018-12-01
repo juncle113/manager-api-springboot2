@@ -1,17 +1,19 @@
 package com.cc.dapp.manager.api.service.impl;
 
 import com.cc.dapp.manager.api.constant.Constant;
-import com.cc.dapp.manager.api.domain.ManagerAdmin;
-import com.cc.dapp.manager.api.domain.ManagerLog;
 import com.cc.dapp.manager.api.enums.AdminRemarkEnum;
 import com.cc.dapp.manager.api.enums.AdminRoleTypeEnum;
 import com.cc.dapp.manager.api.enums.AdminStatusEnum;
+import com.cc.dapp.manager.api.exception.AccountHasExistedException;
 import com.cc.dapp.manager.api.exception.AdminLoginException;
 import com.cc.dapp.manager.api.exception.AuthorizedException;
-import com.cc.dapp.manager.api.pojo.dto.AdminDTO;
-import com.cc.dapp.manager.api.pojo.dto.AdminLoginDTO;
-import com.cc.dapp.manager.api.pojo.vo.AdminLoginVO;
-import com.cc.dapp.manager.api.pojo.vo.AdminVO;
+import com.cc.dapp.manager.api.exception.DataNotFoundException;
+import com.cc.dapp.manager.api.model.domain.ManagerAdmin;
+import com.cc.dapp.manager.api.model.domain.ManagerLog;
+import com.cc.dapp.manager.api.model.dto.AdminDTO;
+import com.cc.dapp.manager.api.model.dto.AdminLoginDTO;
+import com.cc.dapp.manager.api.model.vo.AdminLoginVO;
+import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.repository.ManagerAdminRepository;
 import com.cc.dapp.manager.api.repository.ManagerLogRepository;
 import com.cc.dapp.manager.api.service.AdminService;
@@ -20,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,14 +40,14 @@ public class AdminServiceImpl implements AdminService {
 
         ManagerLog managerLog = new ManagerLog();
 
-        ManagerAdmin managerAdmin = managerAdminRepository.findByUserNameAndIsDeleted(adminLoginDTO.getUserName(), false);
+        ManagerAdmin managerAdmin = managerAdminRepository.findByUserNameAndDeleted(adminLoginDTO.getUserName(), false);
         String passwordWithMD5 = DigestUtils.md5DigestAsHex(adminLoginDTO.getPassword().getBytes());
 
         // 登录失败：用户名或密码错误的场合
         if (managerAdmin == null || !passwordWithMD5.equals(managerAdmin.getPassword())) {
 
             managerLog.setRemark(editRemark(managerAdmin.getUserName(), AdminRemarkEnum.LOGIN_FAILED.getMessage()));
-            managerLog.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+            managerLog.setCreatedTime(DateUtil.now());
             managerLogRepository.save(managerLog);
 
             throw new AdminLoginException();
@@ -57,7 +58,7 @@ public class AdminServiceImpl implements AdminService {
 
             managerLog.setId(managerAdmin.getId());
             managerLog.setRemark(editRemark(managerAdmin.getUserName(), AdminRemarkEnum.LOGIN_FORBIDDEN.getMessage()));
-            managerLog.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+            managerLog.setCreatedTime(DateUtil.now());
             managerLogRepository.save(managerLog);
 
             throw new AuthorizedException();
@@ -66,7 +67,7 @@ public class AdminServiceImpl implements AdminService {
         // 登录成功的场合
         managerLog.setId(managerAdmin.getId());
         managerLog.setRemark(editRemark(managerAdmin.getUserName(), AdminRemarkEnum.LOGIN_SUCCESS.getMessage()));
-        managerLog.setCreatedTime(new Timestamp(System.currentTimeMillis()));
+        managerLog.setCreatedTime(DateUtil.now());
         managerLogRepository.save(managerLog);
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
@@ -96,6 +97,12 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminVO add(AdminDTO adminDTO) {
+
+        int count = managerAdminRepository.countByUserName(adminDTO.getUserName());
+        if (count > 0) {
+            throw new AccountHasExistedException();
+        }
+
         ManagerAdmin managerAdmin = new ManagerAdmin();
         managerAdmin.setUserName(adminDTO.getUserName());
         managerAdmin.setName(adminDTO.getName());
@@ -103,11 +110,11 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setRoleType(adminDTO.getRoleType());
         managerAdmin.setRemark(adminDTO.getRemark());
         managerAdmin.setStatus(adminDTO.getStatus());
-        managerAdmin.setIsDeleted(false);
+        managerAdmin.setDeleted(false);
         managerAdmin.setCreatedTime(DateUtil.now());
-        managerAdmin.setCreatedBy(1);
+        managerAdmin.setCreatedById(adminDTO.getByAdminId());
         managerAdmin.setModifiedTime(DateUtil.now());
-        managerAdmin.setModifiedBy(1);
+        managerAdmin.setModifiedById(adminDTO.getByAdminId());
 
         return editAdminVO(managerAdminRepository.save(managerAdmin));
     }
@@ -115,25 +122,47 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public AdminVO modify(Integer adminId, AdminDTO adminDTO) {
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
-        if (managerAdminOptional.isPresent()) {
-            ManagerAdmin managerAdmin = managerAdminOptional.get();
-            managerAdmin.setName(adminDTO.getName());
-            managerAdmin.setPassword(DigestUtils.md5DigestAsHex(adminDTO.getPassword().getBytes()));
-            managerAdmin.setRoleType(adminDTO.getRoleType());
-            managerAdmin.setRemark(adminDTO.getRemark());
-            managerAdmin.setStatus(adminDTO.getStatus());
-            managerAdmin.setModifiedTime(DateUtil.now());
-            managerAdmin.setModifiedBy(1);
-
-            return editAdminVO(managerAdminRepository.save(managerAdmin));
-        } else {
-            return null;
+        if (!managerAdminOptional.isPresent()) {
+            throw new DataNotFoundException();
         }
 
+        ManagerAdmin managerAdmin = managerAdminOptional.get();
+        if (managerAdmin.getRoleType() == AdminRoleTypeEnum.ROOT.getCode()) {
+            // 不能修改root账号
+            throw new AuthorizedException();
+        }
+
+        managerAdmin.setName(adminDTO.getName());
+        managerAdmin.setPassword(DigestUtils.md5DigestAsHex(adminDTO.getPassword().getBytes()));
+        managerAdmin.setRoleType(adminDTO.getRoleType());
+        managerAdmin.setRemark(adminDTO.getRemark());
+        managerAdmin.setStatus(adminDTO.getStatus());
+        managerAdmin.setModifiedTime(DateUtil.now());
+        managerAdmin.setModifiedById(adminDTO.getByAdminId());
+
+        return editAdminVO(managerAdminRepository.save(managerAdmin));
     }
 
-    private String editRemark(String admin, String message) {
-        return admin.concat(Constant.HALF_SPACE).concat(message);
+    @Override
+    public void remove(Integer adminId) {
+
+
+        Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
+        if (!managerAdminOptional.isPresent()) {
+            throw new DataNotFoundException();
+        }
+
+        ManagerAdmin managerAdmin = managerAdminOptional.get();
+        if (managerAdmin.getRoleType() == AdminRoleTypeEnum.ROOT.getCode()) {
+            // 不能删除root账号
+            throw new AuthorizedException();
+        }
+
+        managerAdminRepository.deleteById(adminId);
+    }
+
+    private String editRemark(String adminUserName, String message) {
+        return adminUserName.concat(Constant.HALF_SPACE).concat(message);
     }
 
     private AdminVO editAdminVO(ManagerAdmin managerAdmin) {
@@ -147,10 +176,10 @@ public class AdminServiceImpl implements AdminService {
         adminVO.setStatus(managerAdmin.getStatus());
         adminVO.setStatusName(AdminStatusEnum.getNameByCode(managerAdmin.getStatus()));
         adminVO.setCreatedTime(managerAdmin.getCreatedTime());
-        adminVO.setCreatedBy(managerAdmin.getCreatedBy());
+        adminVO.setCreatedBy(managerAdmin.getCreatedById());
         adminVO.setCreatedByUserName("manytoone");
         adminVO.setModifiedTime(managerAdmin.getModifiedTime());
-        adminVO.setModifiedBy(managerAdmin.getModifiedBy());
+        adminVO.setModifiedBy(managerAdmin.getModifiedById());
         adminVO.setModifiedByUserName("manytoone2");
 
         return adminVO;

@@ -1,7 +1,7 @@
 package com.cc.dapp.manager.api.service;
 
-import com.cc.dapp.manager.api.pojo.dto.UserDTO;
-import com.cc.dapp.manager.api.pojo.vo.UserVO;
+import com.cc.dapp.manager.api.model.dto.UserDTO;
+import com.cc.dapp.manager.api.model.vo.UserVO;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
