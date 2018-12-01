@@ -11,13 +11,13 @@ public interface AdminService extends BaseService {
 
     AdminLoginVO login(AdminLoginDTO adminLoginDTO);
 
-    AdminLoginVO logout();
+    AdminLoginVO logout(Integer byAdminId);
 
-    List<AdminVO> getList();
+    List<AdminVO> getList(Integer byAdminId);
 
-    AdminVO add(AdminDTO adminDTO);
+    AdminVO add(Integer byAdminId, AdminDTO adminDTO);
 
-    AdminVO modify(Integer adminId, AdminDTO adminDTO);
+    AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO);
 
-    void remove(Integer adminId);
+    void remove(Integer byAdminId, Integer adminId);
 }

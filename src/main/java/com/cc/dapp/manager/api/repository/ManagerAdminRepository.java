@@ -7,6 +7,10 @@ public interface ManagerAdminRepository extends JpaRepository<ManagerAdmin, Inte
 
     ManagerAdmin findByUserNameAndDeleted(String userName, Boolean deleted);
 
+    ManagerAdmin findByUserName(String userName);
+
     int countByUserName(String userName);
+
+
 
 }
