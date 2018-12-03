@@ -5,7 +5,7 @@ import com.cc.dapp.manager.api.enums.AdminRemarkEnum;
 import com.cc.dapp.manager.api.enums.AdminRoleTypeEnum;
 import com.cc.dapp.manager.api.enums.AdminStatusEnum;
 import com.cc.dapp.manager.api.enums.AuthTypeEnum;
-import com.cc.dapp.manager.api.exception.AccountHasExistedException;
+import com.cc.dapp.manager.api.exception.AccountExistedException;
 import com.cc.dapp.manager.api.exception.AdminLoginException;
 import com.cc.dapp.manager.api.exception.AuthorizedException;
 import com.cc.dapp.manager.api.exception.DataNotFoundException;
@@ -74,7 +74,7 @@ public class AdminServiceImpl implements AdminService {
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setId(managerAdmin.getId());
-        adminLoginVO.setToken("1");
+        adminLoginVO.setToken("token");
 
         return adminLoginVO;
     }
@@ -101,15 +101,15 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminVO add(Integer byAdminId, AdminDTO adminDTO) {
+    public AdminVO add(AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthTypeEnum.WRITE);
+        checkPermission(adminDTO.getByAdminId(), AuthTypeEnum.WRITE);
 
-        // 检查用户名是否被占用
+        // 检查用户名是否被占用（不包括已被逻辑删除的账号）
         int count = managerAdminRepository.countByUserName(adminDTO.getUserName());
         if (count > 0) {
-            throw new AccountHasExistedException();
+            throw new AccountExistedException();
         }
 
         // 创建账号
@@ -130,10 +130,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO) {
+    public AdminVO modify(Integer adminId, AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthTypeEnum.WRITE);
+        checkPermission(adminDTO.getByAdminId(), AuthTypeEnum.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -158,7 +158,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void remove(Integer byAdminId, Integer adminId) {
+    public void remove(Integer adminId, Integer byAdminId) {
 
         // 检查权限
         checkPermission(byAdminId, AuthTypeEnum.WRITE);
@@ -235,8 +235,8 @@ public class AdminServiceImpl implements AdminService {
 
         // 检查可写权限（有权：系统管理员、超级管理员，无权：普通管理员）
         if (AuthTypeEnum.WRITE.equals(authTypeEnum)) {
-            if (!AdminRoleTypeEnum.ROOT.equals(managerAdmin.getRoleType()) ||
-                    !AdminRoleTypeEnum.SUPER_ADMIN.equals(managerAdmin.getRoleType())) {
+            if (managerAdmin.getRoleType() != AdminRoleTypeEnum.ROOT.getCode() &&
+                    managerAdmin.getRoleType() != AdminRoleTypeEnum.SUPER_ADMIN.getCode()) {
                 throw new AuthorizedException();
             }
         }

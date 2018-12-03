@@ -6,6 +6,8 @@ import com.cc.dapp.manager.api.model.vo.AdminLoginVO;
 import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.service.AdminService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,6 +43,9 @@ public class AdminController extends BaseController {
     }
 
     @ApiOperation("修改管理员")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "adminId", value = "adminId", paramType = "query", defaultValue = "2", required = true)
+    })
     @PutMapping("/{adminId}")
     public ResponseEntity<AdminVO> modify(@PathVariable(name = "adminId") Integer adminId,
                                           @RequestBody @Valid AdminDTO adminDTO) {
@@ -48,12 +53,15 @@ public class AdminController extends BaseController {
     }
 
     @ApiOperation("删除管理员（逻辑删除）")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "byAdminId", value = "byAdminId", paramType = "query", defaultValue = "1", required = true)
+    })
     @DeleteMapping("/{adminId}")
-    public ResponseEntity remove(@PathVariable(name = "adminId") Integer adminId) {
-        adminService.remove(adminId);
+    public ResponseEntity remove(@PathVariable(name = "adminId") Integer adminId,
+                                 @RequestParam(name = "byAdminId") Integer byAdminId) {
+        adminService.remove(adminId, byAdminId);
         return ResponseEntity.ok(null);
     }
-
 
 //    @ApiOperation("注销")
 //    @PostMapping("/logout")

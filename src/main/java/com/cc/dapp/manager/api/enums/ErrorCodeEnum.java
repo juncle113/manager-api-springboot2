@@ -21,7 +21,7 @@ public enum ErrorCodeEnum {
     USER_NOT_EXIST(20004, "用户不存在"),
     USER_HAS_EXISTED(20005, "用户已存在"),
     ADMIN_LOGIN_ERROR(20006, "账号或密码错误"),
-    ACCOUNT_HAS_EXISTED(20007, "账号已被占用"),
+    ACCOUNT_EXISTED(20007, "账号已被占用"),
 
     /* 业务错误：30001-39999 */
     SPECIFIED_QUESTIONED_USER_NOT_EXIST(30001, "某业务出现问题"),
@@ -32,7 +32,7 @@ public enum ErrorCodeEnum {
     /* 数据错误：50001-599999 */
     DATA_NOT_FOUND(50001, "数据未找到"),
     DATA_IS_WRONG(50002, "数据有误"),
-    DATA_ALREADY_EXISTED(50003, "数据已存在"),
+    DATA_EXISTED(50003, "数据已存在"),
 
     /* 接口错误：60001-69999 */
     INTERFACE_INNER_INVOKE_ERROR(60001, "内部系统接口调用异常"),
