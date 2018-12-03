@@ -3,6 +3,7 @@ package com.cc.dapp.manager.api.util;
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Base64Utils;
 
@@ -28,31 +29,34 @@ public class AuthUtil {
         return Base64Utils.encodeToString(token.getBytes());
     }
 
-//    @Autowired
-//    private InfoUserMapper infoUserMapper;
-
-    @CachePut(key = "#userId")
-    public String putToken(String userId, String token) {
-        return token;
+//    @CachePut(key = "#id")
+//    public String putToken(String id, String token) {
+//        return token;
+//    }
+//
+//    @CacheEvict(key = "#id")
+//    public void removeToken(String id) {
+//        return;
+//    }
+//
+//    @Cacheable(key = "#id")
+//    public String getToken(String id) {
+//        return null;
+//    }
+    @CachePut(key = "#token")
+    public String putToken(String token, String id) {
+        return id;
     }
 
-    @CacheEvict(key = "#userId")
-    public void removeToken(String userId) {
+    @CacheEvict(key = "#token")
+    public void removeToken(String token) {
         return;
     }
 
-//    @Cacheable(key = "#token")
-//    public String getUserId(String token) {
-//
-//        String userId = null;
-//
-////            InfoUser infoUser = this.infoUserMapper.getUserByUserName(token);
-//            if (infoUser != null) {
-//                userId = infoUser.getUserId();
-//            }
-//
-//        return userId;
-//    }
+    @Cacheable(key = "#token")
+    public String getToken(String token) {
+        return null;
+    }
 
 //    public List search(String userId) {
 //        CacheManager cacheManager = CacheManager.create();

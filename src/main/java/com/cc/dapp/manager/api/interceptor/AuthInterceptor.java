@@ -1,8 +1,9 @@
 package com.cc.dapp.manager.api.interceptor;
 
 import com.cc.dapp.manager.api.annotation.Auth;
-import com.cc.dapp.manager.api.constant.ProfileConstant;
 import com.cc.dapp.manager.api.exception.AuthorizedException;
+import com.cc.dapp.manager.api.util.AuthUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.method.HandlerMethod;
@@ -16,12 +17,15 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     @Value("${spring.profiles.active}")
     private String profile;
 
+    @Autowired
+    private AuthUtil authUtil;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        if (ProfileConstant.DEV.equals(profile)) {
-            return true;
-        }
+//        if (ProfileConstant.DEV.equals(profile)) {
+//            return true;
+//        }
 
         // 如果不是映射到方法直接通过
         if (!(handler instanceof HandlerMethod)) {
@@ -34,8 +38,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         }
 
         String token = request.getHeader(HttpHeaders.AUTHORIZATION);
+//        String id = request.getParameter("byAdminId");
 
-        if(!"token".equals(token)){
+        if(token == null || authUtil.getToken(token) == null){
             throw new AuthorizedException();
         }
 

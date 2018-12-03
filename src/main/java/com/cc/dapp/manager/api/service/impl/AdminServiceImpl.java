@@ -76,10 +76,9 @@ public class AdminServiceImpl implements AdminService {
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setId(managerAdmin.getId());
-//        adminLoginVO.setTokenType(AuthUtil.TOKEN_TYPE);
         adminLoginVO.setToken(AuthUtil.generateToken());
 
-        authUtil.putToken("","");
+        authUtil.putToken(adminLoginVO.getToken(), String.valueOf(managerAdmin.getId()));
 
         return adminLoginVO;
     }
