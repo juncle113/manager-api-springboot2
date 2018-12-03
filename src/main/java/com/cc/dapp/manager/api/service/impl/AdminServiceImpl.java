@@ -1,10 +1,9 @@
 package com.cc.dapp.manager.api.service.impl;
 
+import com.cc.dapp.manager.api.constant.AdminRemarkConstant;
 import com.cc.dapp.manager.api.constant.Constant;
-import com.cc.dapp.manager.api.enums.AdminRemarkEnum;
-import com.cc.dapp.manager.api.enums.AdminRoleTypeEnum;
+import com.cc.dapp.manager.api.enums.AdminRoleEnum;
 import com.cc.dapp.manager.api.enums.AdminStatusEnum;
-import com.cc.dapp.manager.api.enums.AuthTypeEnum;
 import com.cc.dapp.manager.api.exception.AccountExistedException;
 import com.cc.dapp.manager.api.exception.AdminLoginException;
 import com.cc.dapp.manager.api.exception.AuthorizedException;
@@ -18,6 +17,7 @@ import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.repository.ManagerAdminRepository;
 import com.cc.dapp.manager.api.repository.ManagerLogRepository;
 import com.cc.dapp.manager.api.service.AdminService;
+import com.cc.dapp.manager.api.util.AuthUtil;
 import com.cc.dapp.manager.api.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,19 +36,21 @@ public class AdminServiceImpl implements AdminService {
     @Autowired
     private ManagerLogRepository managerLogRepository;
 
+    @Autowired
+    private AuthUtil authUtil;
+
     @Override
     public AdminLoginVO login(AdminLoginDTO adminLoginDTO) {
 
         ManagerLog managerLog = new ManagerLog();
 
-//        ManagerAdmin managerAdmin = managerAdminRepository.findByUserNameAndDeleted(adminLoginDTO.getUserName(), false);
         ManagerAdmin managerAdmin = managerAdminRepository.findByUserName(adminLoginDTO.getUserName());
         String passwordWithMD5 = DigestUtils.md5DigestAsHex(adminLoginDTO.getPassword().getBytes());
 
         // 登录失败：用户名或密码错误的场合
         if (managerAdmin == null || !passwordWithMD5.equals(managerAdmin.getPassword())) {
 
-            managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), AdminRemarkEnum.LOGIN_FAILED.getMessage()));
+            managerLog.setRemark(editLogRemark(adminLoginDTO.getUserName(), AdminRemarkConstant.LOGIN_FAILED));
             managerLog.setCreatedTime(DateUtil.now());
             managerLogRepository.save(managerLog);
 
@@ -59,7 +61,7 @@ public class AdminServiceImpl implements AdminService {
         if (AdminStatusEnum.INVALID.getCode() == managerAdmin.getStatus()) {
 
             managerLog.setId(managerAdmin.getId());
-            managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), AdminRemarkEnum.LOGIN_FORBIDDEN.getMessage()));
+            managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), AdminRemarkConstant.LOGIN_FORBIDDEN));
             managerLog.setCreatedTime(DateUtil.now());
             managerLogRepository.save(managerLog);
 
@@ -68,13 +70,16 @@ public class AdminServiceImpl implements AdminService {
 
         // 登录成功的场合
         managerLog.setId(managerAdmin.getId());
-        managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), AdminRemarkEnum.LOGIN_SUCCESS.getMessage()));
+        managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), AdminRemarkConstant.LOGIN_SUCCESS));
         managerLog.setCreatedTime(DateUtil.now());
         managerLogRepository.save(managerLog);
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setId(managerAdmin.getId());
-        adminLoginVO.setToken("token");
+//        adminLoginVO.setTokenType(AuthUtil.TOKEN_TYPE);
+        adminLoginVO.setToken(AuthUtil.generateToken());
+
+        authUtil.putToken("","");
 
         return adminLoginVO;
     }
@@ -88,7 +93,7 @@ public class AdminServiceImpl implements AdminService {
     public List<AdminVO> getList(Integer byAdminId) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthTypeEnum.READ_ONLY);
+        checkPermission(byAdminId, AuthUtil.READ_ONLY);
 
         List<ManagerAdmin> managerAdmins = managerAdminRepository.findAll();
 
@@ -104,7 +109,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminVO add(AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(adminDTO.getByAdminId(), AuthTypeEnum.WRITE);
+        checkPermission(adminDTO.getByAdminId(), AuthUtil.WRITE);
 
         // 检查用户名是否被占用（不包括已被逻辑删除的账号）
         int count = managerAdminRepository.countByUserName(adminDTO.getUserName());
@@ -133,7 +138,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminVO modify(Integer adminId, AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(adminDTO.getByAdminId(), AuthTypeEnum.WRITE);
+        checkPermission(adminDTO.getByAdminId(), AuthUtil.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -141,7 +146,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         ManagerAdmin managerAdmin = managerAdminOptional.get();
-        if (managerAdmin.getRoleType() == AdminRoleTypeEnum.ROOT.getCode()) {
+        if (managerAdmin.getRoleType() == AdminRoleEnum.ROOT.getCode()) {
             // 不能修改root账号
             throw new AuthorizedException();
         }
@@ -161,7 +166,7 @@ public class AdminServiceImpl implements AdminService {
     public void remove(Integer adminId, Integer byAdminId) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthTypeEnum.WRITE);
+        checkPermission(byAdminId, AuthUtil.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -169,7 +174,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         ManagerAdmin managerAdmin = managerAdminOptional.get();
-        if (managerAdmin.getRoleType() == AdminRoleTypeEnum.ROOT.getCode()) {
+        if (managerAdmin.getRoleType() == AdminRoleEnum.ROOT.getCode()) {
             // 不能删除root账号
             throw new AuthorizedException();
         }
@@ -198,7 +203,7 @@ public class AdminServiceImpl implements AdminService {
         adminVO.setUserName(managerAdmin.getUserName());
         adminVO.setName(managerAdmin.getName());
         adminVO.setRoleType(managerAdmin.getRoleType());
-        adminVO.setRoleTypeName(AdminRoleTypeEnum.getNameByCode(managerAdmin.getRoleType()));
+        adminVO.setRoleTypeName(AdminRoleEnum.getNameByCode(managerAdmin.getRoleType()));
         adminVO.setRemark(managerAdmin.getRemark());
         adminVO.setStatus(managerAdmin.getStatus());
         adminVO.setStatusName(AdminStatusEnum.getNameByCode(managerAdmin.getStatus()));
@@ -215,11 +220,11 @@ public class AdminServiceImpl implements AdminService {
     /**
      * 检查权限
      * @param byAdminId 管理员id
-     * @param authTypeEnum 检查权限类型
+     * @param authType 检查权限类型
      * @throws DataNotFoundException 数据不存在
      * @throws AuthorizedException 无访问权限
      */
-    private void checkPermission(Integer byAdminId, AuthTypeEnum authTypeEnum) {
+    private void checkPermission(Integer byAdminId, String authType) {
 
         // 检查账号是否存在
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(byAdminId);
@@ -234,9 +239,9 @@ public class AdminServiceImpl implements AdminService {
         }
 
         // 检查可写权限（有权：系统管理员、超级管理员，无权：普通管理员）
-        if (AuthTypeEnum.WRITE.equals(authTypeEnum)) {
-            if (managerAdmin.getRoleType() != AdminRoleTypeEnum.ROOT.getCode() &&
-                    managerAdmin.getRoleType() != AdminRoleTypeEnum.SUPER_ADMIN.getCode()) {
+        if (AuthUtil.WRITE.equals(authType)) {
+            if (managerAdmin.getRoleType() != AdminRoleEnum.ROOT.getCode() &&
+                    managerAdmin.getRoleType() != AdminRoleEnum.SUPER_ADMIN.getCode()) {
                 throw new AuthorizedException();
             }
         }

@@ -24,5 +24,10 @@ spring:
     hibernate:
       ddl-auto: update
 
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:/ehcache.xml
+
 custom:
 

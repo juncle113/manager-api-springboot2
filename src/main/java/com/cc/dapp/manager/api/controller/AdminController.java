@@ -1,14 +1,12 @@
 package com.cc.dapp.manager.api.controller;
 
+import com.cc.dapp.manager.api.annotation.Auth;
 import com.cc.dapp.manager.api.model.dto.AdminDTO;
 import com.cc.dapp.manager.api.model.dto.AdminLoginDTO;
 import com.cc.dapp.manager.api.model.vo.AdminLoginVO;
 import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.service.AdminService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +21,11 @@ public class AdminController extends BaseController {
     @Autowired
     private AdminService adminService;
 
-    @ApiOperation("登录")
+    @ApiOperation(value = "登录", notes = "通过检查管理员的用户名和密码，完成登录")
+//    @PostMapping("/oauth2/token")
     @PostMapping("/token")
-    public ResponseEntity<AdminLoginVO> getToken(@RequestBody @Valid AdminLoginDTO adminLoginDTO) {
+
+    public ResponseEntity<AdminLoginVO> login(@RequestBody @Valid AdminLoginDTO adminLoginDTO) {
         return ResponseEntity.ok(adminService.login(adminLoginDTO));
     }
 
@@ -38,6 +38,7 @@ public class AdminController extends BaseController {
 
     @ApiOperation("新建管理员")
     @PostMapping("/")
+    @Auth
     public ResponseEntity<AdminVO> add(@RequestBody @Valid AdminDTO adminDTO) {
         return ResponseEntity.created(null).body(adminService.add(adminDTO));
     }
@@ -47,6 +48,7 @@ public class AdminController extends BaseController {
             @ApiImplicitParam(name = "adminId", value = "adminId", paramType = "query", defaultValue = "2", required = true)
     })
     @PutMapping("/{adminId}")
+    @Auth
     public ResponseEntity<AdminVO> modify(@PathVariable(name = "adminId") Integer adminId,
                                           @RequestBody @Valid AdminDTO adminDTO) {
         return ResponseEntity.ok(adminService.modify(adminId, adminDTO));
@@ -57,6 +59,7 @@ public class AdminController extends BaseController {
             @ApiImplicitParam(name = "byAdminId", value = "byAdminId", paramType = "query", defaultValue = "1", required = true)
     })
     @DeleteMapping("/{adminId}")
+    @Auth
     public ResponseEntity remove(@PathVariable(name = "adminId") Integer adminId,
                                  @RequestParam(name = "byAdminId") Integer byAdminId) {
         adminService.remove(adminId, byAdminId);
@@ -64,7 +67,7 @@ public class AdminController extends BaseController {
     }
 
 //    @ApiOperation("注销")
-//    @PostMapping("/logout")
+//    @DeleteMapping("/token")
 //    public ResponseEntity logout() {
 //        return adminService.logout();
 //    }

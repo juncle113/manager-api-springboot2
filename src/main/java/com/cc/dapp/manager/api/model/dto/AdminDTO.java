@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 
 @ApiModel(value = "AdminDTO", description = "管理员DTO")
 @Data
-public class AdminDTO {
+public class AdminDTO extends BaseDTO {
 
     @ApiModelProperty(value = "用户名", required = true, example = "admin")
     @NotBlank(message = "用户名不能为空")

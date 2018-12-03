@@ -8,7 +8,7 @@ import java.util.Date;
 
 @ApiModel(value = "AdminVO", description = "管理员VO")
 @Data
-public class AdminVO {
+public class AdminVO extends BaseVO {
 
     @ApiModelProperty(value = "id", required = true, example = "1")
     private Integer id;

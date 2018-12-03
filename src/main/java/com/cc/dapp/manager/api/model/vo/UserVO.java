@@ -6,7 +6,7 @@ import lombok.Data;
 
 @ApiModel(value = "UserVO", description = "用户VO")
 @Data
-public class UserVO {
+public class UserVO extends BaseVO {
 
     @ApiModelProperty(value = "用户名", required = true, example = "admin")
     private String username;

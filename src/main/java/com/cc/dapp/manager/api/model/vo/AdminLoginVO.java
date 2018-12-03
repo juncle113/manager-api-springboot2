@@ -6,7 +6,7 @@ import lombok.Data;
 
 @ApiModel(value = "AdminLoginVO", description = "登录VO")
 @Data
-public class AdminLoginVO {
+public class AdminLoginVO extends BaseVO {
 
     @ApiModelProperty(value = "id", required = true, example = "1")
     private Integer id;
@@ -14,4 +14,15 @@ public class AdminLoginVO {
     @ApiModelProperty(value = "token", required = true, example = "abcdefgh12345678")
     private String token;
 
+//    @ApiModelProperty(value = "accessToken", required = true, example = "abcdefgh12345678")
+//    private String accessToken;
+//
+//    @ApiModelProperty(value = "tokenType", required = true, example = "bearer")
+//    private String tokenType;
+//
+//    @ApiModelProperty(value = "expiresIn", required = true, example = "3600")
+//    private String expiresIn;
+//
+//    @ApiModelProperty(value = "refreshToken", required = true, example = "ijklmnop12345678")
+//    private String refreshToken;
 }

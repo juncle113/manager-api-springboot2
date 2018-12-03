@@ -17,7 +17,7 @@ public enum AdminStatusEnum {
     }
 
     public static String getNameByCode(int code) {
-        for (AdminRoleTypeEnum item : AdminRoleTypeEnum.values()) {
+        for (AdminRoleEnum item : AdminRoleEnum.values()) {
             if (code == item.getCode()) {
                 return item.getName();
             }
