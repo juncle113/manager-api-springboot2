@@ -84,11 +84,6 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminLoginVO logout(Integer byAdminId) {
-        return null;
-    }
-
-    @Override
     public List<AdminVO> getList(Integer byAdminId) {
 
         // 检查权限
@@ -179,6 +174,11 @@ public class AdminServiceImpl implements AdminService {
         }
 
         managerAdminRepository.deleteById(adminId);
+    }
+
+    @Override
+    public void logout(Integer adminId) {
+        authUtil.removeToken(String.valueOf(adminId));
     }
 
     /**
