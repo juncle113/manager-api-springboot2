@@ -4,8 +4,8 @@
 
     <!-- 设定缓存的默认数据过期策略 -->
 
-    <cache name="tokens" maxElementsInMemory="1000000" eternal="false"
-           timeToIdleSeconds="86400" timeToLiveSeconds="604800" >
+    <cache name="tokens" maxElementsInMemory="1000" eternal="false"
+           timeToIdleSeconds="3600" timeToLiveSeconds="86400" >
         <searchable keys="true">
             <searchAttribute name="userId"/>
         </searchable>
@@ -17,11 +17,11 @@
 
 
     <defaultCache
-            maxElementsInMemory="10000"
+            maxElementsInMemory="10000000"
             eternal="false"
             overflowToDisk="true"
-            timeToIdleSeconds="10"
-            timeToLiveSeconds="120"
+            timeToIdleSeconds="86400"
+            timeToLiveSeconds="604800"
             diskPersistent="false"
             memoryStoreEvictionPolicy="LRU"
             diskExpiryThreadIntervalSeconds="120"/>

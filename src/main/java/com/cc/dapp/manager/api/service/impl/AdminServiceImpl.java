@@ -76,9 +76,7 @@ public class AdminServiceImpl implements AdminService {
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setId(managerAdmin.getId());
-        adminLoginVO.setToken(AuthUtil.generateToken());
-
-        authUtil.putToken(adminLoginVO.getToken(), String.valueOf(managerAdmin.getId()));
+        adminLoginVO.setToken(authUtil.createToken(String.valueOf(managerAdmin.getId())));
 
         return adminLoginVO;
     }
@@ -100,10 +98,10 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminVO add(AdminDTO adminDTO) {
+    public AdminVO add(Integer byAdminId, AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(adminDTO.getByAdminId(), AuthUtil.WRITE);
+        checkPermission(byAdminId, AuthUtil.WRITE);
 
         // 检查用户名是否被占用（不包括已被逻辑删除的账号）
         int count = managerAdminRepository.countByUserName(adminDTO.getUserName());
@@ -121,18 +119,18 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setStatus(adminDTO.getStatus());
         managerAdmin.setDeleted(false);
         managerAdmin.setCreatedTime(DateUtil.now());
-        managerAdmin.setCreatedById(adminDTO.getByAdminId());
+        managerAdmin.setCreatedById(byAdminId);
         managerAdmin.setModifiedTime(DateUtil.now());
-        managerAdmin.setModifiedById(adminDTO.getByAdminId());
+        managerAdmin.setModifiedById(byAdminId);
 
         return editAdminVO(managerAdminRepository.save(managerAdmin));
     }
 
     @Override
-    public AdminVO modify(Integer adminId, AdminDTO adminDTO) {
+    public AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(adminDTO.getByAdminId(), AuthUtil.WRITE);
+        checkPermission(byAdminId, AuthUtil.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -151,13 +149,13 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setRemark(adminDTO.getRemark());
         managerAdmin.setStatus(adminDTO.getStatus());
         managerAdmin.setModifiedTime(DateUtil.now());
-        managerAdmin.setModifiedById(adminDTO.getByAdminId());
+        managerAdmin.setModifiedById(byAdminId);
 
         return editAdminVO(managerAdminRepository.save(managerAdmin));
     }
 
     @Override
-    public void remove(Integer adminId, Integer byAdminId) {
+    public void remove(Integer byAdminId, Integer adminId) {
 
         // 检查权限
         checkPermission(byAdminId, AuthUtil.WRITE);
@@ -177,8 +175,8 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public void logout(Integer adminId) {
-        authUtil.removeToken(String.valueOf(adminId));
+    public void logout(Integer byAdminId) {
+        authUtil.removeToken(String.valueOf(byAdminId));
     }
 
     /**
@@ -223,7 +221,7 @@ public class AdminServiceImpl implements AdminService {
      * @throws DataNotFoundException 数据不存在
      * @throws AuthorizedException 无访问权限
      */
-    private void checkPermission(Integer byAdminId, String authType) {
+    private void checkPermission(Integer byAdminId, int authType) {
 
         // 检查账号是否存在
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(byAdminId);
@@ -238,11 +236,13 @@ public class AdminServiceImpl implements AdminService {
         }
 
         // 检查可写权限（有权：系统管理员、超级管理员，无权：普通管理员）
-        if (AuthUtil.WRITE.equals(authType)) {
+        if (AuthUtil.WRITE == authType) {
             if (managerAdmin.getRoleType() != AdminRoleEnum.ROOT.getCode() &&
                     managerAdmin.getRoleType() != AdminRoleEnum.SUPER_ADMIN.getCode()) {
                 throw new AuthorizedException();
             }
         }
+
+
     }
 }

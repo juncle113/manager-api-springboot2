@@ -10,68 +10,71 @@ import org.springframework.util.Base64Utils;
 import java.util.UUID;
 
 @Component
-@CacheConfig(cacheNames = {"tokens"})
+@CacheConfig(cacheNames = { AuthUtil.TOKENS })
 public class AuthUtil {
 
     /**
      * 只读权限
      */
-    public static final String READ_ONLY = "read_only";
+    public static final int READ_ONLY = 1;
 
     /**
      * 可写权限
      */
-    public static final String WRITE = "write";
+    public static final int WRITE = 2;
 
+    /**
+     * 缓存token
+     */
+    public static final String TOKENS = "tokens";
 
-    public static String generateToken() {
-        String token = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 18);
-        return Base64Utils.encodeToString(token.getBytes());
+    /**
+     * 当前登录账号id
+     */
+    public static final String CURRENT_ADMIN_ID = "currentAdminId";
+
+    /**
+     * 生成token
+     * @return String 生成的token
+     */
+    public static String generateToken(String id) {
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        return Base64Utils.encodeToString(uuid.concat("_").concat(id).getBytes());
+
     }
 
-//    @CachePut(key = "#id")
-//    public String putToken(String id, String token) {
-//        return token;
-//    }
-//
-//    @CacheEvict(key = "#id")
-//    public void removeToken(String id) {
-//        return;
-//    }
-//
-//    @Cacheable(key = "#id")
-//    public String getToken(String id) {
-//        return null;
-//    }
-    @CachePut(key = "#token")
-    public String putToken(String token, String id) {
-        return id;
+    /**
+     * 根据token取得id
+     * @param token token
+     * @return String id
+     */
+    public static String getIdByToken(String token) {
+        return new String(Base64Utils.decodeFromString(token)).split("_")[1];
     }
 
-    @CacheEvict(key = "#token")
-    public void removeToken(String token) {
+    /**
+     * 缓存token
+     * @return String 缓存的token
+     */
+    @CachePut(key = "#id")
+    public String createToken(String id) {
+        return generateToken(id);
+    }
+
+    /**
+     * 清除缓存的token
+     */
+    @CacheEvict(key = "#id")
+    public void removeToken(String id) {
         return;
     }
 
-    @Cacheable(key = "#token")
-    public String getToken(String token) {
+    /**
+     * 取得缓存的token
+     * @return String 缓存的token
+     */
+    @Cacheable(key = "#id")
+    public String getToken(String id) {
         return null;
     }
-
-//    public List search(String userId) {
-//        CacheManager cacheManager = CacheManager.create();
-//        Cache cache = cacheManager.getCache("tokens");
-//        Query query = cache.createQuery();
-//        query.includeKeys();
-//        query.includeValues();
-//        Attribute<String> attribute = cache.getSearchAttribute("value");
-//        query.addCriteria(attribute.eq(userId));
-//        Results results = query.execute();
-//        List<Result> resultList = results.all();
-//        List<String> resultKeys = new ArrayList();
-//        for (Result result : resultList) {
-//            resultKeys.add(String.valueOf(result.getKey()));
-//        }
-//        return resultKeys;
-//    }
 }

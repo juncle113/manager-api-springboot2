@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@ApiModel(value = "AdminLoginDTO", description = "管理员登录DTO")
+@ApiModel(value = "AdminLoginDTO", description = "管理员登录信息")
 @Data
 public class AdminLoginDTO extends BaseDTO {
 

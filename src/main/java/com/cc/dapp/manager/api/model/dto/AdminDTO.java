@@ -35,8 +35,4 @@ public class AdminDTO extends BaseDTO {
     @ApiModelProperty(value = "状态(1：启用，2：禁用)", required = true, example = "1")
     @NotNull(message = "状态不能为空")
     private Integer status;
-
-    @ApiModelProperty(value = "操作人id", required = true, example = "1")
-    @NotNull(message = "操作人id不能为空")
-    private Integer byAdminId;
 }

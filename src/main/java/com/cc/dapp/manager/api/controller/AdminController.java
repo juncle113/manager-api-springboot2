@@ -6,10 +6,8 @@ import com.cc.dapp.manager.api.model.dto.AdminLoginDTO;
 import com.cc.dapp.manager.api.model.vo.AdminLoginVO;
 import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.service.AdminService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import com.cc.dapp.manager.api.util.AuthUtil;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +22,11 @@ public class AdminController extends BaseController {
     @Autowired
     private AdminService adminService;
 
-    @ApiOperation(value = "登录", notes = "通过检查管理员的用户名和密码，完成登录")
+    @ApiOperation(value = "登录", notes = "通过检查管理员的用户名和密码，完成登录。")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "adminLoginDTO", value = "管理员登录信息", paramType = "body", dataType = "AdminLoginDTO", required = true)
+    })
     @PostMapping("/token")
-
     public ResponseEntity<AdminLoginVO> login(@RequestBody @Valid AdminLoginDTO adminLoginDTO) {
         return ResponseEntity.ok(adminService.login(adminLoginDTO));
     }
@@ -38,11 +38,12 @@ public class AdminController extends BaseController {
 //    }
 //
 
-    @ApiOperation(value = "新建管理员", notes = "使用root账户创建管理员")
-    @PostMapping("/")
+    @ApiOperation(value = "新建管理员", notes = "使用root账户创建管理员。")
+    @PostMapping
     @Auth
-    public ResponseEntity<AdminVO> add(@RequestBody @Valid AdminDTO adminDTO) {
-        return ResponseEntity.created(null).body(adminService.add(adminDTO));
+    public ResponseEntity<AdminVO> add(@ApiParam(hidden = true) @RequestAttribute(name = AuthUtil.CURRENT_ADMIN_ID) Integer byAdminId,
+                                       @RequestBody @Valid AdminDTO adminDTO) {
+        return ResponseEntity.created(null).body(adminService.add(byAdminId, adminDTO));
     }
 
     @ApiOperation(value = "修改管理员", notes = "修改管理员信息，不能操作root账户。")
@@ -51,31 +52,29 @@ public class AdminController extends BaseController {
     })
     @PutMapping("/{adminId}")
     @Auth
-    public ResponseEntity<AdminVO> modify(@PathVariable Integer adminId,
+    public ResponseEntity<AdminVO> modify(@ApiParam(hidden = true) @RequestAttribute(name = AuthUtil.CURRENT_ADMIN_ID) Integer byAdminId,
+                                          @PathVariable Integer adminId,
                                           @RequestBody @Valid AdminDTO adminDTO) {
-        return ResponseEntity.ok(adminService.modify(adminId, adminDTO));
+        return ResponseEntity.ok(adminService.modify(byAdminId, adminId, adminDTO));
     }
 
     @ApiOperation(value = "删除管理员", notes = "逻辑删除管理员，不能操作root账户。")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "adminId", value = "管理员id", paramType = "path", defaultValue = "2", required = true),
-            @ApiImplicitParam(name = "byAdminId", value = "操作人id", paramType = "query", defaultValue = "1", required = true)
+            @ApiImplicitParam(name = "adminId", value = "管理员id", dataType = "int", paramType = "path", defaultValue = "2", required = true)
     })
     @DeleteMapping("/{adminId}")
     @Auth
-    public ResponseEntity remove(@PathVariable Integer adminId,
-                                 @RequestParam Integer byAdminId) {
-        adminService.remove(adminId, byAdminId);
+    public ResponseEntity remove(@ApiParam(hidden = true) @RequestAttribute(name = AuthUtil.CURRENT_ADMIN_ID) Integer byAdminId,
+                                 @PathVariable Integer adminId) {
+        adminService.remove(byAdminId, adminId);
         return ResponseEntity.ok(null);
     }
 
-    @ApiOperation(value = "注销", notes = "清除缓存的token")
-    @DeleteMapping("/{adminId}/token")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "adminId", value = "管理员id", paramType = "path", defaultValue = "1", required = true)
-    })
-    public ResponseEntity logout(@PathVariable Integer adminId) {
-        adminService.logout(adminId);
+    @ApiOperation(value = "注销", notes = "清除缓存中当前登录账号的token。")
+    @DeleteMapping("/self/token")
+    @Auth
+    public ResponseEntity logout(@ApiParam(hidden = true) @RequestAttribute(name = AuthUtil.CURRENT_ADMIN_ID) Integer byAdminId) {
+        adminService.logout(byAdminId);
         return ResponseEntity.ok(null);
     }
 }
