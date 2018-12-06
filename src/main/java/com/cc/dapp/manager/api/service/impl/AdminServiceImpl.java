@@ -17,7 +17,7 @@ import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.repository.ManagerAdminRepository;
 import com.cc.dapp.manager.api.repository.ManagerLogRepository;
 import com.cc.dapp.manager.api.service.AdminService;
-import com.cc.dapp.manager.api.util.AuthUtil;
+import com.cc.dapp.manager.api.auth.AuthManager;
 import com.cc.dapp.manager.api.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
     private ManagerLogRepository managerLogRepository;
 
     @Autowired
-    private AuthUtil authUtil;
+    private AuthManager authManager;
 
     @Override
     public AdminLoginVO login(AdminLoginDTO adminLoginDTO) {
@@ -76,7 +76,7 @@ public class AdminServiceImpl implements AdminService {
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setId(managerAdmin.getId());
-        adminLoginVO.setToken(authUtil.createToken(String.valueOf(managerAdmin.getId())));
+        adminLoginVO.setToken(authManager.createToken(String.valueOf(managerAdmin.getId())));
 
         return adminLoginVO;
     }
@@ -85,7 +85,7 @@ public class AdminServiceImpl implements AdminService {
     public List<AdminVO> getList(Integer byAdminId) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthUtil.READ_ONLY);
+        checkPermission(byAdminId, AuthManager.READ_ONLY);
 
         List<ManagerAdmin> managerAdmins = managerAdminRepository.findAll();
 
@@ -101,7 +101,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminVO add(Integer byAdminId, AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthUtil.WRITE);
+        checkPermission(byAdminId, AuthManager.WRITE);
 
         // 检查用户名是否被占用（不包括已被逻辑删除的账号）
         int count = managerAdminRepository.countByUserName(adminDTO.getUserName());
@@ -130,7 +130,7 @@ public class AdminServiceImpl implements AdminService {
     public AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthUtil.WRITE);
+        checkPermission(byAdminId, AuthManager.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -158,7 +158,7 @@ public class AdminServiceImpl implements AdminService {
     public void remove(Integer byAdminId, Integer adminId) {
 
         // 检查权限
-        checkPermission(byAdminId, AuthUtil.WRITE);
+        checkPermission(byAdminId, AuthManager.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -176,7 +176,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void logout(Integer byAdminId) {
-        authUtil.removeToken(String.valueOf(byAdminId));
+        authManager.removeToken(String.valueOf(byAdminId));
     }
 
     /**
@@ -236,7 +236,7 @@ public class AdminServiceImpl implements AdminService {
         }
 
         // 检查可写权限（有权：系统管理员、超级管理员，无权：普通管理员）
-        if (AuthUtil.WRITE == authType) {
+        if (AuthManager.WRITE == authType) {
             if (managerAdmin.getRoleType() != AdminRoleEnum.ROOT.getCode() &&
                     managerAdmin.getRoleType() != AdminRoleEnum.SUPER_ADMIN.getCode()) {
                 throw new AuthorizedException();

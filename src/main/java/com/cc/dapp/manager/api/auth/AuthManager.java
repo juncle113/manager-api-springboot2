@@ -1,4 +1,4 @@
-package com.cc.dapp.manager.api.util;
+package com.cc.dapp.manager.api.auth;
 
 import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CacheEvict;
@@ -10,8 +10,8 @@ import org.springframework.util.Base64Utils;
 import java.util.UUID;
 
 @Component
-@CacheConfig(cacheNames = { AuthUtil.TOKENS })
-public class AuthUtil {
+@CacheConfig(cacheNames = { AuthManager.TOKENS })
+public class AuthManager {
 
     /**
      * 只读权限
@@ -31,14 +31,14 @@ public class AuthUtil {
     /**
      * 当前登录账号id
      */
-    public static final String CURRENT_ADMIN_ID = "currentAdminId";
+    public static final String CURRENT_ID = "currentId";
 
     /**
      * 生成token
      * @return String 生成的token
      */
     public static String generateToken(String id) {
-        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16);
         return Base64Utils.encodeToString(uuid.concat("_").concat(id).getBytes());
 
     }

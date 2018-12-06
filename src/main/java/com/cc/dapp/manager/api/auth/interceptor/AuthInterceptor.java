@@ -1,8 +1,8 @@
-package com.cc.dapp.manager.api.interceptor;
+package com.cc.dapp.manager.api.auth.interceptor;
 
-import com.cc.dapp.manager.api.annotation.Auth;
+import com.cc.dapp.manager.api.auth.annotation.Auth;
 import com.cc.dapp.manager.api.exception.AuthorizedException;
-import com.cc.dapp.manager.api.util.AuthUtil;
+import com.cc.dapp.manager.api.auth.AuthManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +20,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
     private String profile;
 
     @Autowired
-    private AuthUtil authUtil;
+    private AuthManager authManager;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -49,19 +49,19 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
         }
 
         // 取得id
-        String id = AuthUtil.getIdByToken(token);
+        String id = AuthManager.getIdByToken(token);
         if (id == null) {
             throw new AuthorizedException();
         }
 
         // 3.检查缓存的token是否一致
-        String cacheToken = authUtil.getToken(id);
+        String cacheToken = authManager.getToken(id);
         if (cacheToken == null || !cacheToken.equals(token)) {
             throw new AuthorizedException();
         }
 
         // 4.设置当前登录管理员id
-        request.setAttribute(AuthUtil.CURRENT_ADMIN_ID, Integer.valueOf(id));
+        request.setAttribute(AuthManager.CURRENT_ID, Integer.valueOf(id));
 
         return true;
     }

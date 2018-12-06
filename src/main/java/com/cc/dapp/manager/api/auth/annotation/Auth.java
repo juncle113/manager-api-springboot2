@@ -1,4 +1,4 @@
-package com.cc.dapp.manager.api.annotation;
+package com.cc.dapp.manager.api.auth.annotation;
 
 import java.lang.annotation.*;
 
