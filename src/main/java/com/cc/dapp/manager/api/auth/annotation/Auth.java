@@ -1,5 +1,7 @@
 package com.cc.dapp.manager.api.auth.annotation;
 
+import com.cc.dapp.manager.api.auth.AuthManager;
+
 import java.lang.annotation.*;
 
 @Inherited
@@ -7,5 +9,5 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface Auth {
-    String type() default "";
+    int value() default AuthManager.WRITE;
 }

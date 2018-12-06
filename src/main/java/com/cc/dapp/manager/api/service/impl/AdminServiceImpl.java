@@ -1,7 +1,7 @@
 package com.cc.dapp.manager.api.service.impl;
 
-import com.cc.dapp.manager.api.constant.AdminRemarkConstant;
-import com.cc.dapp.manager.api.constant.Constant;
+import com.cc.dapp.manager.api.auth.AuthManager;
+import com.cc.dapp.manager.api.constant.ManagerLogConstant;
 import com.cc.dapp.manager.api.enums.AdminRoleEnum;
 import com.cc.dapp.manager.api.enums.AdminStatusEnum;
 import com.cc.dapp.manager.api.exception.AccountExistedException;
@@ -9,15 +9,13 @@ import com.cc.dapp.manager.api.exception.AdminLoginException;
 import com.cc.dapp.manager.api.exception.AuthorizedException;
 import com.cc.dapp.manager.api.exception.DataNotFoundException;
 import com.cc.dapp.manager.api.model.domain.ManagerAdmin;
-import com.cc.dapp.manager.api.model.domain.ManagerLog;
 import com.cc.dapp.manager.api.model.dto.AdminDTO;
 import com.cc.dapp.manager.api.model.dto.AdminLoginDTO;
 import com.cc.dapp.manager.api.model.vo.AdminLoginVO;
 import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.repository.ManagerAdminRepository;
-import com.cc.dapp.manager.api.repository.ManagerLogRepository;
 import com.cc.dapp.manager.api.service.AdminService;
-import com.cc.dapp.manager.api.auth.AuthManager;
+import com.cc.dapp.manager.api.service.ManagerLogService;
 import com.cc.dapp.manager.api.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,45 +32,31 @@ public class AdminServiceImpl implements AdminService {
     private ManagerAdminRepository managerAdminRepository;
 
     @Autowired
-    private ManagerLogRepository managerLogRepository;
+    private AuthManager authManager;
 
     @Autowired
-    private AuthManager authManager;
+    private ManagerLogService managerLogService;
 
     @Override
     public AdminLoginVO login(AdminLoginDTO adminLoginDTO) {
-
-        ManagerLog managerLog = new ManagerLog();
 
         ManagerAdmin managerAdmin = managerAdminRepository.findByUserName(adminLoginDTO.getUserName());
         String passwordWithMD5 = DigestUtils.md5DigestAsHex(adminLoginDTO.getPassword().getBytes());
 
         // 登录失败：用户名或密码错误的场合
         if (managerAdmin == null || !passwordWithMD5.equals(managerAdmin.getPassword())) {
-
-            managerLog.setRemark(editLogRemark(adminLoginDTO.getUserName(), AdminRemarkConstant.LOGIN_FAILED));
-            managerLog.setCreatedTime(DateUtil.now());
-            managerLogRepository.save(managerLog);
-
+            managerLogService.log(adminLoginDTO.getUserName(), ManagerLogConstant.LOGIN_FAILED);
             throw new AdminLoginException();
         }
 
         // 登录失败：账号被禁用的场合
         if (AdminStatusEnum.INVALID.getCode() == managerAdmin.getStatus()) {
-
-            managerLog.setId(managerAdmin.getId());
-            managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), AdminRemarkConstant.LOGIN_FORBIDDEN));
-            managerLog.setCreatedTime(DateUtil.now());
-            managerLogRepository.save(managerLog);
-
+            managerLogService.log(managerAdmin.getId(), ManagerLogConstant.LOGIN_FORBIDDEN);
             throw new AuthorizedException();
         }
 
         // 登录成功的场合
-        managerLog.setId(managerAdmin.getId());
-        managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), AdminRemarkConstant.LOGIN_SUCCESS));
-        managerLog.setCreatedTime(DateUtil.now());
-        managerLogRepository.save(managerLog);
+        managerLogService.log(managerAdmin.getId(), ManagerLogConstant.LOGIN_SUCCESS);
 
         AdminLoginVO adminLoginVO = new AdminLoginVO();
         adminLoginVO.setId(managerAdmin.getId());
@@ -82,10 +66,21 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<AdminVO> getList(Integer byAdminId) {
+    public void logout(Integer byAdminId) {
+        authManager.removeToken(String.valueOf(byAdminId));
+    }
 
-        // 检查权限
-        checkPermission(byAdminId, AuthManager.READ_ONLY);
+    @Override
+    public AdminVO getById(Integer byAdminId, Integer adminId) {
+
+//        ManagerAdmin managerAdmin = managerAdminRepository.findById(adminId);
+
+
+        return null;
+    }
+
+    @Override
+    public List<AdminVO> search(Integer byAdminId) {
 
         List<ManagerAdmin> managerAdmins = managerAdminRepository.findAll();
 
@@ -99,9 +94,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public AdminVO add(Integer byAdminId, AdminDTO adminDTO) {
-
-        // 检查权限
-        checkPermission(byAdminId, AuthManager.WRITE);
 
         // 检查用户名是否被占用（不包括已被逻辑删除的账号）
         int count = managerAdminRepository.countByUserName(adminDTO.getUserName());
@@ -122,15 +114,15 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setCreatedById(byAdminId);
         managerAdmin.setModifiedTime(DateUtil.now());
         managerAdmin.setModifiedById(byAdminId);
+        AdminVO adminVO = editAdminVO(managerAdminRepository.save(managerAdmin));
 
-        return editAdminVO(managerAdminRepository.save(managerAdmin));
+        managerLogService.log(byAdminId, ManagerLogConstant.ADD_ADMIN);
+
+        return adminVO;
     }
 
     @Override
     public AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO) {
-
-        // 检查权限
-        checkPermission(byAdminId, AuthManager.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -150,15 +142,15 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setStatus(adminDTO.getStatus());
         managerAdmin.setModifiedTime(DateUtil.now());
         managerAdmin.setModifiedById(byAdminId);
+        AdminVO adminVO = editAdminVO(managerAdminRepository.save(managerAdmin));
 
-        return editAdminVO(managerAdminRepository.save(managerAdmin));
+        managerLogService.log(byAdminId, ManagerLogConstant.MODIFY_ADMIN);
+
+        return adminVO;
     }
 
     @Override
     public void remove(Integer byAdminId, Integer adminId) {
-
-        // 检查权限
-        checkPermission(byAdminId, AuthManager.WRITE);
 
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
         if (!managerAdminOptional.isPresent()) {
@@ -172,21 +164,8 @@ public class AdminServiceImpl implements AdminService {
         }
 
         managerAdminRepository.deleteById(adminId);
-    }
 
-    @Override
-    public void logout(Integer byAdminId) {
-        authManager.removeToken(String.valueOf(byAdminId));
-    }
-
-    /**
-     * 编辑日志备注
-     * @param adminUserName 管理员用户名
-     * @param message 备注信息
-     * @return 编辑后的备注
-     */
-    private String editLogRemark(String adminUserName, String message) {
-        return adminUserName.concat(Constant.HALF_SPACE).concat(message);
+        managerLogService.log(byAdminId, ManagerLogConstant.REMOVE_ADMIN);
     }
 
     /**
@@ -212,37 +191,5 @@ public class AdminServiceImpl implements AdminService {
         adminVO.setModifiedByUserName("manytoone2");
 
         return adminVO;
-    }
-
-    /**
-     * 检查权限
-     * @param byAdminId 管理员id
-     * @param authType 检查权限类型
-     * @throws DataNotFoundException 数据不存在
-     * @throws AuthorizedException 无访问权限
-     */
-    private void checkPermission(Integer byAdminId, int authType) {
-
-        // 检查账号是否存在
-        Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(byAdminId);
-        if (!managerAdminOptional.isPresent()) {
-            throw new DataNotFoundException();
-        }
-
-        // 检查是否被禁用
-        ManagerAdmin managerAdmin = managerAdminOptional.get();
-        if (AdminStatusEnum.VALID.equals(managerAdmin.getStatus())) {
-            throw new AuthorizedException();
-        }
-
-        // 检查可写权限（有权：系统管理员、超级管理员，无权：普通管理员）
-        if (AuthManager.WRITE == authType) {
-            if (managerAdmin.getRoleType() != AdminRoleEnum.ROOT.getCode() &&
-                    managerAdmin.getRoleType() != AdminRoleEnum.SUPER_ADMIN.getCode()) {
-                throw new AuthorizedException();
-            }
-        }
-
-
     }
 }

@@ -1,6 +1,6 @@
 package com.cc.dapp.manager.api.constant;
 
-public class AdminRemarkConstant {
+public class ManagerLogConstant {
 
     /**
      * 登录成功
@@ -18,13 +18,23 @@ public class AdminRemarkConstant {
     public static final String LOGIN_FORBIDDEN = "登录失败！账号已被禁用";
 
     /**
-     * 修改管理员信息
+     * 新建管理员
      */
-    public static final String MODIFY_ADMIN_INFO = "修改管理员信息";
+    public static final String ADD_ADMIN = "新建管理员";
 
     /**
-     * 修改用户信息
+     * 修改管理员
      */
-    public static final String MODIFY_USER_INFO = "修改用户信息";
+    public static final String MODIFY_ADMIN = "修改管理员";
+
+    /**
+     * 删除管理员
+     */
+    public static final String REMOVE_ADMIN = "删除管理员";
+
+    /**
+     * 修改用户
+     */
+    public static final String MODIFY_USER = "修改用户";
 
 }

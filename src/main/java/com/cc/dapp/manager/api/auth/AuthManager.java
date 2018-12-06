@@ -16,7 +16,7 @@ public class AuthManager {
     /**
      * 只读权限
      */
-    public static final int READ_ONLY = 1;
+    public static final int READ = 1;
 
     /**
      * 可写权限
