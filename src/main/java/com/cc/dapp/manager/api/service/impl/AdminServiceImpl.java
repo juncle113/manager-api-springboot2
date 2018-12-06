@@ -71,16 +71,21 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public AdminVO getById(Integer byAdminId, Integer adminId) {
+    public AdminVO getById(Integer adminId) {
 
-//        ManagerAdmin managerAdmin = managerAdminRepository.findById(adminId);
+        Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(adminId);
+        if (!managerAdminOptional.isPresent()) {
+            throw new DataNotFoundException();
+        }
 
+        ManagerAdmin managerAdmin = managerAdminOptional.get();
+        AdminVO adminVO = editAdminVO(managerAdmin);
 
-        return null;
+        return adminVO;
     }
 
     @Override
-    public List<AdminVO> search(Integer byAdminId) {
+    public List<AdminVO> search() {
 
         List<ManagerAdmin> managerAdmins = managerAdminRepository.findAll();
 
@@ -116,7 +121,7 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setModifiedById(byAdminId);
         AdminVO adminVO = editAdminVO(managerAdminRepository.save(managerAdmin));
 
-        managerLogService.log(byAdminId, ManagerLogConstant.ADD_ADMIN);
+        managerLogService.log(byAdminId, ManagerLogConstant.ADD_ADMIN.concat(String.valueOf(adminVO.getId())));
 
         return adminVO;
     }
@@ -144,7 +149,7 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setModifiedById(byAdminId);
         AdminVO adminVO = editAdminVO(managerAdminRepository.save(managerAdmin));
 
-        managerLogService.log(byAdminId, ManagerLogConstant.MODIFY_ADMIN);
+        managerLogService.log(byAdminId, ManagerLogConstant.MODIFY_ADMIN.concat(String.valueOf(adminVO.getId())));
 
         return adminVO;
     }
@@ -165,11 +170,12 @@ public class AdminServiceImpl implements AdminService {
 
         managerAdminRepository.deleteById(adminId);
 
-        managerLogService.log(byAdminId, ManagerLogConstant.REMOVE_ADMIN);
+        managerLogService.log(byAdminId, ManagerLogConstant.REMOVE_ADMIN.concat(String.valueOf(adminId)));
     }
 
     /**
      * 编辑管理员VO
+     *
      * @param managerAdmin 管理员信息
      * @return 编辑后的管理员VO
      */

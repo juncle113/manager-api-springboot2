@@ -44,25 +44,24 @@ public class AdminController extends BaseController {
         return ResponseEntity.ok(null);
     }
 
-    @ApiOperation(value = "取得管理员", notes = "notesnotesnotes")
+    @ApiOperation(value = "取得管理员", notes = "根据管理员id，取得管理员信息。")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "adminId", value = "管理员id", dataType = "int", paramType = "path", defaultValue = "2", required = true)
     })
     @GetMapping("/{adminId}")
     @Auth(AuthManager.READ)
-    public ResponseEntity<AdminVO> getById(@CurrentId Integer byAdminId,
-                                           @PathVariable Integer adminId) {
-        return ResponseEntity.ok(adminService.getById(byAdminId, adminId));
+    public ResponseEntity<AdminVO> getById(@PathVariable Integer adminId) {
+        return ResponseEntity.ok(adminService.getById(adminId));
     }
 
-    @ApiOperation(value = "查询管理员", notes = "notesnotesnotes")
+    @ApiOperation(value = "查询管理员", notes = "查询符合条件的管理员信息。")
     @ApiImplicitParams({
-//            @ApiImplicitParam(name = "adminId", value = "管理员id", dataType = "int", paramType = "path", defaultValue = "2", required = true)
+
     })
     @GetMapping("/")
     @Auth(AuthManager.READ)
-    public ResponseEntity<List<AdminVO>> search(@CurrentId Integer byAdminId) {
-        return ResponseEntity.ok(adminService.search(byAdminId));
+    public ResponseEntity<List<AdminVO>> search() {
+        return ResponseEntity.ok(adminService.search());
     }
 
     @ApiOperation(value = "新建管理员", notes = "使用root账户创建管理员。")

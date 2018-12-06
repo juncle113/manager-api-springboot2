@@ -1,38 +1,29 @@
 package com.cc.dapp.manager.api.controller;
 
-import com.cc.dapp.manager.api.model.dto.UserDTO;
-import com.cc.dapp.manager.api.model.vo.UserVO;
-import com.cc.dapp.manager.api.service.UserService;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import javax.websocket.server.PathParam;
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Api(tags = "用户")
 @RestController
 @RequestMapping("/users")
 public class UserController extends BaseController {
 
-    @Autowired
-    private UserService userService;
-
-    @ApiOperation("取得用户列表")
-    @GetMapping
-    public ResponseEntity<List<UserVO>> getUserList() {
-        return userService.getUserList();
-    }
-
-    @ApiOperation("修改用户")
-    @PutMapping("/{userId}")
-    public ResponseEntity<UserVO> upateUser(@PathParam ("userId") String userId,
-                                            @RequestBody @Valid UserDTO userDTO) {
-        return userService.updateUser(userDTO);
-    }
+//    @Autowired
+//    private UserService userService;
+//
+//    @ApiOperation("取得用户列表")
+//    @GetMapping
+//    public ResponseEntity<List<UserVO>> getUserList() {
+//        return userService.getUserList();
+//    }
+//
+//    @ApiOperation("修改用户")
+//    @PutMapping("/{userId}")
+//    public ResponseEntity<UserVO> upateUser(@PathParam ("userId") String userId,
+//                                            @RequestBody @Valid UserDTO userDTO) {
+//        return userService.updateUser(userDTO);
+//    }
 }
 
 /*
