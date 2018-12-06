@@ -61,6 +61,7 @@ public class AdminController extends BaseController {
     @GetMapping("/")
     @Auth(AuthManager.READ)
     public ResponseEntity<List<AdminVO>> search() {
+        // TODO 设置查询条件
         return ResponseEntity.ok(adminService.search());
     }
 

@@ -4,7 +4,7 @@ import com.cc.dapp.manager.api.enums.ErrorCodeEnum;
 import lombok.Data;
 
 @Data
-public class BusinessException extends RuntimeException{
+public class BusinessException extends RuntimeException {
 
     private ErrorInfo errorInfo;
 

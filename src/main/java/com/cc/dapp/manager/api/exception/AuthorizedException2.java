@@ -4,7 +4,7 @@ import com.cc.dapp.manager.api.enums.ErrorCodeEnum;
 import lombok.Data;
 
 @Data
-public class AuthorizedException2 extends RuntimeException{
+public class AuthorizedException2 extends RuntimeException {
 
     private ErrorInfo errorInfo;
 

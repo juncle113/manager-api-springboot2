@@ -12,5 +12,4 @@ public interface ManagerAdminRepository extends JpaRepository<ManagerAdmin, Inte
     int countByUserName(String userName);
 
 
-
 }

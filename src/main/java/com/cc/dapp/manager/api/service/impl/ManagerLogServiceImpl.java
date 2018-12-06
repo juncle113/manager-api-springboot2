@@ -32,9 +32,9 @@ public class ManagerLogServiceImpl implements ManagerLogService {
 
         ManagerAdmin managerAdmin = managerAdminOptional.get();
         ManagerLog managerLog = new ManagerLog();
-        managerLog.setId(managerAdmin.getId());
         managerLog.setRemark(editLogRemark(managerAdmin.getUserName(), remark));
         managerLog.setCreatedTime(DateUtil.now());
+        managerLog.setCreatedById(managerAdmin.getId());
         managerLogRepository.save(managerLog);
     }
 
@@ -48,8 +48,9 @@ public class ManagerLogServiceImpl implements ManagerLogService {
 
     /**
      * 编辑日志备注
+     *
      * @param adminUserName 管理员用户名
-     * @param message 备注信息
+     * @param message       备注信息
      * @return 编辑后的备注
      */
     private String editLogRemark(String adminUserName, String message) {

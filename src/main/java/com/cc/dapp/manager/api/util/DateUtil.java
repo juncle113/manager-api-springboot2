@@ -6,5 +6,7 @@ public class DateUtil {
 
     public static Timestamp now() {
         return new Timestamp(System.currentTimeMillis());
-    };
+    }
+
+    ;
 }

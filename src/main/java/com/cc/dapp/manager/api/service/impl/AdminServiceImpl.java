@@ -19,6 +19,7 @@ import com.cc.dapp.manager.api.service.ManagerLogService;
 import com.cc.dapp.manager.api.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
@@ -97,6 +98,7 @@ public class AdminServiceImpl implements AdminService {
         return adminVOs;
     }
 
+    @Transactional
     @Override
     public AdminVO add(Integer byAdminId, AdminDTO adminDTO) {
 
@@ -119,13 +121,15 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setCreatedById(byAdminId);
         managerAdmin.setModifiedTime(DateUtil.now());
         managerAdmin.setModifiedById(byAdminId);
-        AdminVO adminVO = editAdminVO(managerAdminRepository.save(managerAdmin));
+        managerAdmin = managerAdminRepository.save(managerAdmin);
+        AdminVO adminVO = editAdminVO(managerAdmin);
 
         managerLogService.log(byAdminId, ManagerLogConstant.ADD_ADMIN.concat(String.valueOf(adminVO.getId())));
 
         return adminVO;
     }
 
+    @Transactional
     @Override
     public AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO) {
 
@@ -147,13 +151,15 @@ public class AdminServiceImpl implements AdminService {
         managerAdmin.setStatus(adminDTO.getStatus());
         managerAdmin.setModifiedTime(DateUtil.now());
         managerAdmin.setModifiedById(byAdminId);
-        AdminVO adminVO = editAdminVO(managerAdminRepository.save(managerAdmin));
+        managerAdmin = managerAdminRepository.save(managerAdmin);
+        AdminVO adminVO = editAdminVO(managerAdmin);
 
         managerLogService.log(byAdminId, ManagerLogConstant.MODIFY_ADMIN.concat(String.valueOf(adminVO.getId())));
 
         return adminVO;
     }
 
+    @Transactional
     @Override
     public void remove(Integer byAdminId, Integer adminId) {
 
@@ -191,10 +197,10 @@ public class AdminServiceImpl implements AdminService {
         adminVO.setStatusName(AdminStatusEnum.getNameByCode(managerAdmin.getStatus()));
         adminVO.setCreatedTime(managerAdmin.getCreatedTime());
         adminVO.setCreatedBy(managerAdmin.getCreatedById());
-        adminVO.setCreatedByUserName("manytoone");
+        adminVO.setCreatedByUserName("manytoone"); // TODO 设置表关联关系
         adminVO.setModifiedTime(managerAdmin.getModifiedTime());
         adminVO.setModifiedBy(managerAdmin.getModifiedById());
-        adminVO.setModifiedByUserName("manytoone2");
+        adminVO.setModifiedByUserName("manytoone2"); // TODO 设置表关联关系
 
         return adminVO;
     }

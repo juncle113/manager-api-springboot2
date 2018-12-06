@@ -10,7 +10,7 @@ import org.springframework.util.Base64Utils;
 import java.util.UUID;
 
 @Component
-@CacheConfig(cacheNames = { AuthManager.TOKENS })
+@CacheConfig(cacheNames = {AuthManager.TOKENS})
 public class AuthManager {
 
     /**
@@ -35,6 +35,7 @@ public class AuthManager {
 
     /**
      * 生成token
+     *
      * @return String 生成的token
      */
     public static String generateToken(String id) {
@@ -45,6 +46,7 @@ public class AuthManager {
 
     /**
      * 根据token取得id
+     *
      * @param token token
      * @return String id
      */
@@ -54,6 +56,7 @@ public class AuthManager {
 
     /**
      * 缓存token
+     *
      * @return String 缓存的token
      */
     @CachePut(key = "#id")
@@ -71,6 +74,7 @@ public class AuthManager {
 
     /**
      * 取得缓存的token
+     *
      * @return String 缓存的token
      */
     @Cacheable(key = "#id")

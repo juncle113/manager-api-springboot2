@@ -14,25 +14,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ExceptionHandler({ BusinessException.class })
+    @ExceptionHandler({BusinessException.class})
     public ResponseEntity handleBusinessException(BusinessException e) {
         logger.warn(ErrorConstant.BUSINESS, e);
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({ AdminLoginException.class })
+    @ExceptionHandler({AdminLoginException.class})
     public ResponseEntity handleLoginException(AdminLoginException e) {
         logger.warn(ErrorConstant.LOGIN, e);
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.UNAUTHORIZED);
     }
 
-    @ExceptionHandler({ AuthorizedException.class })
+    @ExceptionHandler({AuthorizedException.class})
     public ResponseEntity handleLoginException(AuthorizedException e) {
         logger.warn(ErrorConstant.AUTHORIZED, e);
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.FORBIDDEN);
     }
 
-    @ExceptionHandler({ AccountExistedException.class })
+    @ExceptionHandler({AccountExistedException.class})
     public ResponseEntity handleLoginException(AccountExistedException e) {
         logger.warn(ErrorConstant.BUSINESS, e);
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.CONFLICT);

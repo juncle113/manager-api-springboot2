@@ -40,13 +40,13 @@ public class Swagger2Config {
     }
 
     private List<ApiKey> securitySchemes() {
-        List<ApiKey> apiKeyList= new ArrayList();
+        List<ApiKey> apiKeyList = new ArrayList();
         apiKeyList.add(new ApiKey("Authorization", "Authorization", "header"));
         return apiKeyList;
     }
 
     private List<SecurityContext> securityContexts() {
-        List<SecurityContext> securityContexts=new ArrayList<>();
+        List<SecurityContext> securityContexts = new ArrayList<>();
         securityContexts.add(
                 SecurityContext.builder()
                         .securityReferences(defaultAuth())
@@ -59,7 +59,7 @@ public class Swagger2Config {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        List<SecurityReference> securityReferences=new ArrayList<>();
+        List<SecurityReference> securityReferences = new ArrayList<>();
         securityReferences.add(new SecurityReference("Authorization", authorizationScopes));
         return securityReferences;
     }
