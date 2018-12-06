@@ -8,5 +8,4 @@ public class DateUtil {
         return new Timestamp(System.currentTimeMillis());
     }
 
-    ;
 }

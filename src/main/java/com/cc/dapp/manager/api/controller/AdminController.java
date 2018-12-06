@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Api(tags = "管理员")
@@ -47,7 +48,7 @@ public class AdminController extends BaseController {
     })
     @GetMapping("/{adminId}")
     @Auth(AuthManager.READ)
-    public ResponseEntity<AdminVO> getById(@PathVariable Integer adminId) {
+    public ResponseEntity<AdminVO> getById(@PathVariable @NotNull(message = "管理员id不能为空") Integer adminId) {
         return ResponseEntity.ok(adminService.getById(adminId));
     }
 
@@ -77,7 +78,7 @@ public class AdminController extends BaseController {
     @PutMapping("/{adminId}")
     @Auth
     public ResponseEntity<AdminVO> modify(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
-                                          @PathVariable Integer adminId,
+                                          @PathVariable @NotNull(message = "管理员id不能为空") Integer adminId,
                                           @RequestBody @Valid AdminDTO adminDTO) {
         return ResponseEntity.ok(adminService.modify(byAdminId, adminId, adminDTO));
     }
