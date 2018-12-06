@@ -17,9 +17,7 @@ public class CurrentIdResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        if ((parameter.getParameterType().isAssignableFrom(Integer.class) ||
-                parameter.getParameterType().isAssignableFrom(String.class)) &&
-                parameter.hasParameterAnnotation(CurrentId.class)) {
+        if (parameter.hasParameterAnnotation(CurrentId.class)) {
             return true;
         }
         return false;

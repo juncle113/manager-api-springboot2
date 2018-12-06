@@ -41,7 +41,6 @@ public class AuthManager {
     public static String generateToken(String id) {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16);
         return Base64Utils.encodeToString(uuid.concat("_").concat(id).getBytes());
-
     }
 
     /**
