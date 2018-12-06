@@ -5,22 +5,13 @@ spring:
   jackson:
     time-zone: GMT+8
 
-#  cache:
-#    type: ehcache
-#    ehcache:
-#      config: classpath:/ehcache.xml
-
-#  mvc:
-#    view:
-#      prefix: /WEB-INF/
-#      suffix: .jsp
-
-#mybatis:
-#  type-aliases-package: com.cc.dapp.domain
-#  mapper-locations: classpath:mapper/*.xml
+  cache:
+    type: ehcache
+    ehcache:
+      config: classpath:/ehcache.xml
 
 info:
   api-doc: /swagger-ui.html
 
-#logging:
-#  config: classpath:logback-spring.xml
+logging:
+  config: classpath:logback-spring.xml
