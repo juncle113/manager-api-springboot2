@@ -53,15 +53,11 @@ public class AdminController extends BaseController {
         return ResponseEntity.ok(adminService.getById(adminId));
     }
 
-    @ApiOperation(value = "查询管理员", notes = "查询符合条件的管理员信息。")
-    @ApiImplicitParams({
-
-    })
-    @GetMapping("/")
+    @ApiOperation(value = "取得管理员列表", notes = "取得全部管理员信息。")
+    @GetMapping("")
     @Auth(AuthManager.READ)
-    public ResponseEntity<List<AdminVO>> search() {
-        // TODO 设置查询条件
-        return ResponseEntity.ok(adminService.search());
+    public ResponseEntity<List<AdminVO>> getAll() {
+        return ResponseEntity.ok(adminService.getAll());
     }
 
     @ApiOperation(value = "新建管理员", notes = "使用root账户创建管理员。")

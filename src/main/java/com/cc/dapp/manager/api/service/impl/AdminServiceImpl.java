@@ -85,7 +85,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<AdminVO> search() {
+    public List<AdminVO> getAll() {
 
         List<ManagerAdmin> managerAdmins = managerAdminRepository.findAll();
 

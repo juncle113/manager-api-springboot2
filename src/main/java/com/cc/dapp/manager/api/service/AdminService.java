@@ -15,7 +15,7 @@ public interface AdminService extends BaseService {
 
     AdminVO getById(Integer adminId);
 
-    List<AdminVO> search();
+    List<AdminVO> getAll();
 
     AdminVO add(Integer byAdminId, AdminDTO adminDTO);
 

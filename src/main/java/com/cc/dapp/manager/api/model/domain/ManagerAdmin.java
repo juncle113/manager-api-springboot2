@@ -27,7 +27,7 @@ public class ManagerAdmin {
     @Column(columnDefinition = "varchar(16) COMMENT '姓名'")
     private String name;
 
-    @Column(columnDefinition = "int unsigned COMMENT '角色类型（1：超级管理员，2：普通管理员）'")
+    @Column(columnDefinition = "int unsigned COMMENT '角色类型（1：系统管理员，2：超级管理员，3：普通管理员）'")
     private Integer roleType;
 
     @Column(columnDefinition = "varchar(200) COMMENT '备注'")
