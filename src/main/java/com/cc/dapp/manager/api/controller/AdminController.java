@@ -11,6 +11,7 @@ import com.cc.dapp.manager.api.service.AdminService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -31,15 +32,15 @@ public class AdminController extends BaseController {
     })
     @PostMapping("/token")
     public ResponseEntity<AdminLoginVO> login(@RequestBody @Valid AdminLoginDTO adminLoginDTO) {
-        return ResponseEntity.ok(adminService.login(adminLoginDTO));
+        return ResponseEntity.created(null).body(adminService.login(adminLoginDTO));
     }
 
     @ApiOperation(value = "注销", notes = "清除缓存中当前登录账号的token。")
     @DeleteMapping("/self/token")
-    @Auth
+    @Auth(AuthManager.READ)
     public ResponseEntity logout(@ApiParam(hidden = true) @CurrentId Integer byAdminId) {
         adminService.logout(byAdminId);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 
     @ApiOperation(value = "取得管理员", notes = "根据管理员id，取得管理员信息。")
@@ -66,6 +67,7 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "新建管理员", notes = "使用root账户创建管理员。")
     @PostMapping
     @Auth
+    @Transactional
     public ResponseEntity<AdminVO> add(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
                                        @RequestBody @Valid AdminDTO adminDTO) {
         return ResponseEntity.created(null).body(adminService.add(byAdminId, adminDTO));
@@ -77,6 +79,7 @@ public class AdminController extends BaseController {
     })
     @PutMapping("/{adminId}")
     @Auth
+    @Transactional
     public ResponseEntity<AdminVO> modify(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
                                           @PathVariable @NotNull(message = "管理员id不能为空") Integer adminId,
                                           @RequestBody @Valid AdminDTO adminDTO) {
@@ -89,9 +92,10 @@ public class AdminController extends BaseController {
     })
     @DeleteMapping("/{adminId}")
     @Auth
+    @Transactional
     public ResponseEntity remove(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
                                  @PathVariable Integer adminId) {
         adminService.remove(byAdminId, adminId);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.noContent().build();
     }
 }

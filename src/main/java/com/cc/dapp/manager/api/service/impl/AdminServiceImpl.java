@@ -19,7 +19,6 @@ import com.cc.dapp.manager.api.service.ManagerLogService;
 import com.cc.dapp.manager.api.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
@@ -98,7 +97,6 @@ public class AdminServiceImpl implements AdminService {
         return adminVOs;
     }
 
-    @Transactional
     @Override
     public AdminVO add(Integer byAdminId, AdminDTO adminDTO) {
 
@@ -129,7 +127,6 @@ public class AdminServiceImpl implements AdminService {
         return adminVO;
     }
 
-    @Transactional
     @Override
     public AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO) {
 
@@ -159,7 +156,6 @@ public class AdminServiceImpl implements AdminService {
         return adminVO;
     }
 
-    @Transactional
     @Override
     public void remove(Integer byAdminId, Integer adminId) {
 
