@@ -9,22 +9,28 @@ import org.springframework.util.Base64Utils;
 
 import java.util.UUID;
 
+/**
+ * 鉴权Manager
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Component
 @CacheConfig(cacheNames = {AuthManager.TOKENS})
 public class AuthManager {
 
     /**
-     * 只读权限
+     * 检查权限：只读权限
      */
     public static final int READ = 1;
 
     /**
-     * 可写权限
+     * 检查权限：可写权限
      */
     public static final int WRITE = 2;
 
     /**
-     * 缓存token
+     * token缓存名
      */
     public static final String TOKENS = "tokens";
 
@@ -36,7 +42,7 @@ public class AuthManager {
     /**
      * 生成token
      *
-     * @return String 生成的token
+     * @return token
      */
     public static String generateToken(String id) {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 16);
@@ -47,7 +53,7 @@ public class AuthManager {
      * 根据token取得id
      *
      * @param token token
-     * @return String id
+     * @return id
      */
     public static String getIdByToken(String token) {
         return new String(Base64Utils.decodeFromString(token)).split("_")[1];
@@ -56,7 +62,7 @@ public class AuthManager {
     /**
      * 缓存token
      *
-     * @return String 缓存的token
+     * @return token
      */
     @CachePut(key = "#id")
     public String createToken(String id) {
@@ -74,7 +80,7 @@ public class AuthManager {
     /**
      * 取得缓存的token
      *
-     * @return String 缓存的token
+     * @return token
      */
     @Cacheable(key = "#id")
     public String getToken(String id) {

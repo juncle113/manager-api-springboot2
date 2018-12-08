@@ -5,22 +5,29 @@ import com.cc.dapp.manager.api.auth.annotation.Auth;
 import com.cc.dapp.manager.api.auth.annotation.CurrentId;
 import com.cc.dapp.manager.api.model.dto.AdminDTO;
 import com.cc.dapp.manager.api.model.dto.AdminLoginDTO;
-import com.cc.dapp.manager.api.model.vo.AdminLoginVO;
 import com.cc.dapp.manager.api.model.vo.AdminVO;
 import com.cc.dapp.manager.api.service.AdminService;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
+/**
+ * 管理员Controller
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Api(tags = "管理员")
 @RequestMapping(value = "/admins")
 @RestController
+@Validated
 public class AdminController extends BaseController {
 
     @Autowired
@@ -31,7 +38,7 @@ public class AdminController extends BaseController {
             @ApiImplicitParam(name = "adminLoginDTO", value = "管理员登录信息", paramType = "body", dataType = "AdminLoginDTO", required = true)
     })
     @PostMapping("/token")
-    public ResponseEntity<AdminLoginVO> login(@RequestBody @Valid AdminLoginDTO adminLoginDTO) {
+    public ResponseEntity<?> login(@RequestBody @Validated AdminLoginDTO adminLoginDTO) {
         return ResponseEntity.created(null).body(adminService.login(adminLoginDTO));
     }
 
@@ -49,7 +56,7 @@ public class AdminController extends BaseController {
     })
     @GetMapping("/{adminId}")
     @Auth(AuthManager.READ)
-    public ResponseEntity<AdminVO> getById(@PathVariable @NotNull(message = "管理员id不能为空") Integer adminId) {
+    public ResponseEntity<AdminVO> getById(@PathVariable @Positive(message = "请输入正整数") @NotNull(message = "管理员id不能为空") Integer adminId) {
         return ResponseEntity.ok(adminService.getById(adminId));
     }
 
@@ -65,7 +72,7 @@ public class AdminController extends BaseController {
     @Auth
     @Transactional
     public ResponseEntity<AdminVO> add(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
-                                       @RequestBody @Valid AdminDTO adminDTO) {
+                                       @RequestBody @Validated AdminDTO adminDTO) {
         return ResponseEntity.created(null).body(adminService.add(byAdminId, adminDTO));
     }
 
@@ -77,8 +84,8 @@ public class AdminController extends BaseController {
     @Auth
     @Transactional
     public ResponseEntity<AdminVO> modify(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
-                                          @PathVariable @NotNull(message = "管理员id不能为空") Integer adminId,
-                                          @RequestBody @Valid AdminDTO adminDTO) {
+                                          @PathVariable @Positive @NotNull(message = "管理员id不能为空") Integer adminId,
+                                          @RequestBody @Validated AdminDTO adminDTO) {
         return ResponseEntity.ok(adminService.modify(byAdminId, adminId, adminDTO));
     }
 

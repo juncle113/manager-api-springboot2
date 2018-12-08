@@ -5,8 +5,14 @@ import lombok.Getter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 错误信息
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Getter
-public enum ErrorCodeEnum {
+public enum ErrorEnum {
 
     /* 参数错误：10001-19999 */
     PARAM_IS_INVALID(10001, "参数无效"),
@@ -49,7 +55,13 @@ public enum ErrorCodeEnum {
     private int code;
     private String message;
 
-    ErrorCodeEnum(int code, String message) {
+    /**
+     * 错误信息的构造方法
+     *
+     * @param code 错误编码
+     * @param message 错误提示
+     */
+    ErrorEnum(int code, String message) {
         this.code = code;
         this.message = message;
     }
@@ -59,10 +71,13 @@ public enum ErrorCodeEnum {
         checkCode();
     }
 
+    /**
+     * 校验重复的code值
+     */
     private static void checkCode() {
-        ErrorCodeEnum[] errorCodeEnums = ErrorCodeEnum.values();
+        ErrorEnum[] errorEnums = ErrorEnum.values();
         List codeList = new ArrayList();
-        for (ErrorCodeEnum item : errorCodeEnums) {
+        for (ErrorEnum item : errorEnums) {
             if (codeList.contains(item.getCode())) {
                 System.out.println(item.getCode());
             } else {

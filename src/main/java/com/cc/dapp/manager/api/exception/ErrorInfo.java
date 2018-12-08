@@ -4,6 +4,12 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * 错误信息
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Data
 public class ErrorInfo implements Serializable {
 

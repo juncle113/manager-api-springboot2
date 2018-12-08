@@ -1,5 +1,11 @@
 package com.cc.dapp.manager.api.constant;
 
+/**
+ * 管理日志常量类
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 public class ManagerLogConstant {
 
     /**
