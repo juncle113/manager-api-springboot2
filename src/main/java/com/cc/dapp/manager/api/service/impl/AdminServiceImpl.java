@@ -246,6 +246,11 @@ public class AdminServiceImpl implements AdminService {
      * @return 编辑后的管理员VO
      */
     private AdminVO editAdminVO(ManagerAdmin managerAdmin) {
+
+        // 查询创建和修改人信息
+        String createdByUserName = managerAdminRepository.findUserNameByIdAndDeleted(managerAdmin.getCreatedById(), true);
+        String modifiedByUserName = managerAdminRepository.findUserNameByIdAndDeleted(managerAdmin.getModifiedById(), true);
+
         AdminVO adminVO = new AdminVO();
         adminVO.setId(managerAdmin.getId());
         adminVO.setUserName(managerAdmin.getUserName());
@@ -257,10 +262,10 @@ public class AdminServiceImpl implements AdminService {
         adminVO.setStatusName(AdminStatusEnum.getNameByCode(managerAdmin.getStatus()));
         adminVO.setCreatedTime(managerAdmin.getCreatedTime());
         adminVO.setCreatedBy(managerAdmin.getCreatedById());
-        adminVO.setCreatedByUserName("manytoone"); // TODO 设置表关联关系
+        adminVO.setCreatedByUserName(createdByUserName);
         adminVO.setModifiedTime(managerAdmin.getModifiedTime());
         adminVO.setModifiedBy(managerAdmin.getModifiedById());
-        adminVO.setModifiedByUserName("manytoone2"); // TODO 设置表关联关系
+        adminVO.setModifiedByUserName(modifiedByUserName);
 
         return adminVO;
     }
