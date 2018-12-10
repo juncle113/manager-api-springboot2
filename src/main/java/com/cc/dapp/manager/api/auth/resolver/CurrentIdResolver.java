@@ -23,6 +23,7 @@ public class CurrentIdResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
+        // 过滤解析条件
         if (parameter.hasParameterAnnotation(CurrentId.class)) {
             return true;
         }
@@ -31,6 +32,7 @@ public class CurrentIdResolver implements HandlerMethodArgumentResolver {
 
     @Override
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
+        // 将请求参数中的id设置到方法参数中
         Integer currentId = (Integer) webRequest.getAttribute(AuthManager.CURRENT_ID, RequestAttributes.SCOPE_REQUEST);
         if (currentId == null) {
             throw new MissingServletRequestPartException(AuthManager.CURRENT_ID);
