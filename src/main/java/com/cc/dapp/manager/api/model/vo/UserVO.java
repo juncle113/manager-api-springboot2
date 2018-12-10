@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-@ApiModel(value = "UserVO", description = "用户VO")
+@ApiModel(value = "UserVO", description = "用户信息")
 @Data
 public class UserVO extends BaseVO {
 

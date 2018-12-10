@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
-@ApiModel(value = "AdminDTO", description = "管理员DTO")
+@ApiModel(value = "AdminDTO", description = "管理员信息")
 @Data
 public class AdminDTO extends BaseDTO {
 

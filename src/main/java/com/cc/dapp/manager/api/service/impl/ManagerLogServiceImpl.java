@@ -13,6 +13,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+/**
+ * 管理日志ServiceImpl
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Service
 public class ManagerLogServiceImpl implements ManagerLogService {
 

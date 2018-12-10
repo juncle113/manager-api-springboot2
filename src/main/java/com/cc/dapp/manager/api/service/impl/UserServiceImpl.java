@@ -1,14 +1,14 @@
 package com.cc.dapp.manager.api.service.impl;
 
-import com.cc.dapp.manager.api.model.dto.UserDTO;
-import com.cc.dapp.manager.api.model.vo.UserVO;
 import com.cc.dapp.manager.api.service.UserService;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * 用户ServiceImpl
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

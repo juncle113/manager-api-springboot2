@@ -16,8 +16,20 @@ import springfox.documentation.spring.web.plugins.Docket;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Swagger2配置
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Configuration
 public class Swagger2Config {
+
+    /**
+     * 创建接口
+     *
+     * @return 接口信息
+     */
     @Bean
     public Docket createRestApi() {
         return new Docket(DocumentationType.SWAGGER_2)

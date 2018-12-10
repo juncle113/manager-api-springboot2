@@ -7,6 +7,12 @@ import com.cc.dapp.manager.api.model.vo.AdminVO;
 
 import java.util.List;
 
+/**
+ * 管理员Service
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 public interface AdminService extends BaseService {
 
     AdminLoginVO login(AdminLoginDTO adminLoginDTO);

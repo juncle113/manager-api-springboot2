@@ -6,7 +6,7 @@ import lombok.Data;
 
 import java.util.Date;
 
-@ApiModel(value = "AdminVO", description = "管理员VO")
+@ApiModel(value = "AdminVO", description = "管理员信息")
 @Data
 public class AdminVO extends BaseVO {
 

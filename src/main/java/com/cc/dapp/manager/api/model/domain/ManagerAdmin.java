@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
+@org.hibernate.annotations.Table(appliesTo = "manager_admin", comment = "管理员信息表")
 @SQLDelete(sql = "update manager_admin set deleted = 1 where id = ?")
 @Where(clause = "deleted = 0")
 public class ManagerAdmin {

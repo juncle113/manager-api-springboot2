@@ -25,6 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 管理员ServiceImpl
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Service
 public class AdminServiceImpl implements AdminService {
 
@@ -101,8 +107,8 @@ public class AdminServiceImpl implements AdminService {
     public AdminVO add(Integer byAdminId, AdminDTO adminDTO) {
 
         // 检查用户名是否被占用（不包括已被逻辑删除的账号）
-        int count = managerAdminRepository.countByUserName(adminDTO.getUserName());
-        if (count > 0) {
+        boolean isExist = managerAdminRepository.existsByUserName(adminDTO.getUserName());
+        if (isExist) {
             throw new AccountExistedException();
         }
 

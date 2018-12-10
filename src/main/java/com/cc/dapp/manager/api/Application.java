@@ -6,10 +6,20 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-
+/**
+ * 程序启动入口
+ *
+ * 开启接口文档Swagger2
+ * 开启缓存SpringCache（ehcache实现）
+ * 开启事务管理
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @SpringBootApplication
 @EnableSwagger2
 //@EnableScheduling
+//@EnableWebSecurity
 @EnableCaching
 @EnableTransactionManagement
 public class Application {

@@ -15,7 +15,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 /**
@@ -56,7 +55,7 @@ public class AdminController extends BaseController {
     })
     @GetMapping("/{adminId}")
     @Auth(AuthManager.READ)
-    public ResponseEntity<AdminVO> getById(@PathVariable @Positive(message = "请输入正整数") @NotNull(message = "管理员id不能为空") Integer adminId) {
+    public ResponseEntity<AdminVO> getById(@PathVariable @NotNull(message = "管理员id不能为空") Integer adminId) {
         return ResponseEntity.ok(adminService.getById(adminId));
     }
 
@@ -84,7 +83,7 @@ public class AdminController extends BaseController {
     @Auth
     @Transactional
     public ResponseEntity<AdminVO> modify(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
-                                          @PathVariable @Positive @NotNull(message = "管理员id不能为空") Integer adminId,
+                                          @PathVariable @NotNull(message = "管理员id不能为空") Integer adminId,
                                           @RequestBody @Validated AdminDTO adminDTO) {
         return ResponseEntity.ok(adminService.modify(byAdminId, adminId, adminDTO));
     }

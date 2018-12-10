@@ -58,12 +58,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity(e.getErrorInfo(), HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * validator异常处理（参数非对象的场合）
+     *
+     * @return
+     */
     @ExceptionHandler({ConstraintViolationException.class})
     public ResponseEntity handleConstraintViolationException(ConstraintViolationException e) {
         logger.error(ErrorConstant.PARAMETER, e);
         return new ResponseEntity(e.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
+    /**
+     * validator异常处理（参数为对象的场合）
+     *
+     * @return
+     */
 //    @ExceptionHandler({MethodArgumentNotValidException.class})
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {

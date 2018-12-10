@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
+@org.hibernate.annotations.Table(appliesTo = "manager_log", comment = "管理日志表")
 public class ManagerLog {
 
     @Id

@@ -6,7 +6,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
-@ApiModel(value = "UserDTO", description = "用户DTO")
+@ApiModel(value = "UserDTO", description = "用户信息")
 @Data
 public class UserDTO extends BaseDTO {
 
