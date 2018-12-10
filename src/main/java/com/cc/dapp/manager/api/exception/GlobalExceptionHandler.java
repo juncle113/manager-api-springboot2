@@ -102,12 +102,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     /**
      * validator异常处理（参数为对象的场合）
-     *
+     * <p>
      * 重写父类方法，捕获MethodArgumentNotValidException
      *
-     * @param ex 异常类型
+     * @param ex      异常类型
      * @param headers 响应头信息
-     * @param status 响应状态码
+     * @param status  响应状态码
      * @param request 请求信息
      * @return 响应结果
      */

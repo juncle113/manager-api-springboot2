@@ -8,7 +8,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * 程序启动入口
- *
+ * <p>
  * 开启接口文档Swagger2
  * 开启缓存SpringCache（ehcache实现）
  * 开启事务管理

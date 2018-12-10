@@ -58,7 +58,7 @@ public enum ErrorEnum {
     /**
      * 错误信息的构造方法
      *
-     * @param code 错误编码
+     * @param code    错误编码
      * @param message 错误提示
      */
     ErrorEnum(int code, String message) {

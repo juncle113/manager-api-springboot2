@@ -139,7 +139,7 @@ public class AdminServiceImpl implements AdminService {
      * 新增管理员
      *
      * @param byAdminId 当前管理员id
-     * @param adminDTO 新增的管理员信息
+     * @param adminDTO  新增的管理员信息
      * @return 新增的管理员信息
      */
     @Override
@@ -179,8 +179,8 @@ public class AdminServiceImpl implements AdminService {
      * 修改管理员
      *
      * @param byAdminId 当前管理员id
-     * @param adminId 被修改的管理员id
-     * @param adminDTO 修改的管理员信息
+     * @param adminId   被修改的管理员id
+     * @param adminDTO  修改的管理员信息
      * @return 修改后的管理员信息
      */
     @Override
@@ -218,7 +218,7 @@ public class AdminServiceImpl implements AdminService {
      * 删除管理员
      *
      * @param byAdminId 当前管理员id
-     * @param adminId 被删除的管理员id
+     * @param adminId   被删除的管理员id
      */
     @Override
     public void remove(Integer byAdminId, Integer adminId) {
@@ -270,7 +270,7 @@ public class AdminServiceImpl implements AdminService {
      * 不能处理root账号
      *
      * @param roleType 账号角色
-     * @exception AuthorizedException 权限异常
+     * @throws AuthorizedException 权限异常
      */
     private void checkoutAdminRole(Integer roleType) {
         // 处理root账号的场合，提示无权限

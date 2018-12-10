@@ -49,7 +49,7 @@ public interface AdminService extends BaseService {
      * 新增管理员
      *
      * @param byAdminId 当前管理员id
-     * @param adminDTO 新增的管理员信息
+     * @param adminDTO  新增的管理员信息
      * @return 新增的管理员信息
      */
     AdminVO add(Integer byAdminId, AdminDTO adminDTO);
@@ -58,8 +58,8 @@ public interface AdminService extends BaseService {
      * 修改管理员
      *
      * @param byAdminId 当前管理员id
-     * @param adminId 被修改的管理员id
-     * @param adminDTO 修改的管理员信息
+     * @param adminId   被修改的管理员id
+     * @param adminDTO  修改的管理员信息
      * @return 修改后的管理员信息
      */
     AdminVO modify(Integer byAdminId, Integer adminId, AdminDTO adminDTO);
@@ -68,7 +68,7 @@ public interface AdminService extends BaseService {
      * 删除管理员
      *
      * @param byAdminId 当前管理员id
-     * @param adminId 被删除的管理员id
+     * @param adminId   被删除的管理员id
      */
     void remove(Integer byAdminId, Integer adminId);
 }
