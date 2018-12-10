@@ -4,6 +4,12 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 用户Controller
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Api(tags = "用户")
 @RestController
 @RequestMapping("/users")

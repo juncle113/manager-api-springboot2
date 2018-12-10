@@ -7,6 +7,14 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * 管理员信息表
+ * 删除处理为逻辑删除
+ * 查询处理只取得未被删除的记录
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Data
 @Entity
 @org.hibernate.annotations.Table(appliesTo = "manager_admin", comment = "管理员信息表")

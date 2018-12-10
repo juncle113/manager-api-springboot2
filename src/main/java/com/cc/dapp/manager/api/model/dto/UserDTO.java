@@ -6,6 +6,12 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 用户信息
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @ApiModel(value = "UserDTO", description = "用户信息")
 @Data
 public class UserDTO extends BaseDTO {

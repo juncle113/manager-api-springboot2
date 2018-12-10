@@ -5,6 +5,12 @@ import lombok.Data;
 import javax.persistence.*;
 import java.sql.Timestamp;
 
+/**
+ * 管理日志表
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Data
 @Entity
 @org.hibernate.annotations.Table(appliesTo = "manager_log", comment = "管理日志表")

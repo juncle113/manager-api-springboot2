@@ -6,6 +6,12 @@ import lombok.Data;
 
 import java.util.Date;
 
+/**
+ * 管理员信息
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @ApiModel(value = "AdminVO", description = "管理员信息")
 @Data
 public class AdminVO extends BaseVO {

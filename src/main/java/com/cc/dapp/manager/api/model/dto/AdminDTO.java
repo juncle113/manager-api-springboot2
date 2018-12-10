@@ -10,6 +10,12 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+/**
+ * 管理员信息
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @ApiModel(value = "AdminDTO", description = "管理员信息")
 @Data
 public class AdminDTO extends BaseDTO {

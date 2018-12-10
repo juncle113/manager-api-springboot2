@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 public enum AdminStatusEnum {
 
+    // 对应ManagerAdmin的status属性
     VALID(1, "有效"),
     INVALID(2, "无效");
 

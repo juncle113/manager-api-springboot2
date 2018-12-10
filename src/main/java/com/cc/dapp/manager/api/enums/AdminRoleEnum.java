@@ -11,6 +11,7 @@ import lombok.Getter;
 @Getter
 public enum AdminRoleEnum {
 
+    // 对应ManagerAdmin的roleType属性
     ROOT(1, "系统管理员"),
     SUPER_ADMIN(2, "超级管理员"),
     ADMIN(3, "普通管理员");

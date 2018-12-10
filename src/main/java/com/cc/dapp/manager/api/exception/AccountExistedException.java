@@ -16,7 +16,6 @@ public class AccountExistedException extends RuntimeException {
 
     public AccountExistedException() {
         super(ErrorEnum.ACCOUNT_EXISTED.getMessage());
-
         this.errorInfo = new ErrorInfo(ErrorEnum.ACCOUNT_EXISTED.getCode(), ErrorEnum.ACCOUNT_EXISTED.getMessage());
     }
 }

@@ -69,7 +69,7 @@ public class AdminController extends BaseController {
     @ApiOperation(value = "新建管理员", notes = "使用root账户创建管理员。")
     @PostMapping
     @Auth
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<AdminVO> add(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
                                        @RequestBody @Validated AdminDTO adminDTO) {
         return ResponseEntity.created(null).body(adminService.add(byAdminId, adminDTO));
@@ -81,7 +81,7 @@ public class AdminController extends BaseController {
     })
     @PutMapping("/{adminId}")
     @Auth
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity<AdminVO> modify(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
                                           @PathVariable @NotNull(message = "管理员id不能为空") Integer adminId,
                                           @RequestBody @Validated AdminDTO adminDTO) {
@@ -94,7 +94,7 @@ public class AdminController extends BaseController {
     })
     @DeleteMapping("/{adminId}")
     @Auth
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public ResponseEntity remove(@ApiParam(hidden = true) @CurrentId Integer byAdminId,
                                  @PathVariable Integer adminId) {
         adminService.remove(byAdminId, adminId);

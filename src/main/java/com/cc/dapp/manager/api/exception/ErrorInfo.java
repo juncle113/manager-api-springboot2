@@ -15,7 +15,14 @@ public class ErrorInfo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 错误码
+     */
     private int code;
+
+    /**
+     * 错误信息
+     */
     private String message;
 
     public ErrorInfo(int code, String message) {

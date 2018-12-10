@@ -11,6 +11,12 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.multipart.support.MissingServletRequestPartException;
 
+/**
+ * 当前用户id解析器
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @Component
 public class CurrentIdResolver implements HandlerMethodArgumentResolver {
 

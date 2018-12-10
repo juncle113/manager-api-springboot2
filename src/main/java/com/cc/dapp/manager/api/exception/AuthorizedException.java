@@ -16,7 +16,6 @@ public class AuthorizedException extends RuntimeException {
 
     public AuthorizedException() {
         super(ErrorEnum.PERMISSION_NO_ACCESS.getMessage());
-
         this.errorInfo = new ErrorInfo(ErrorEnum.PERMISSION_NO_ACCESS.getCode(), ErrorEnum.PERMISSION_NO_ACCESS.getMessage());
     }
 }

@@ -16,7 +16,6 @@ public class DataNotFoundException extends RuntimeException {
 
     public DataNotFoundException() {
         super(ErrorEnum.DATA_NOT_FOUND.getMessage());
-
         this.errorInfo = new ErrorInfo(ErrorEnum.DATA_NOT_FOUND.getCode(), ErrorEnum.DATA_NOT_FOUND.getMessage());
     }
 }

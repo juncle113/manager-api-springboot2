@@ -16,7 +16,6 @@ public class DataExistedException extends RuntimeException {
 
     public DataExistedException() {
         super(ErrorEnum.DATA_EXISTED.getMessage());
-
         this.errorInfo = new ErrorInfo(ErrorEnum.DATA_EXISTED.getCode(), ErrorEnum.DATA_EXISTED.getMessage());
     }
 }

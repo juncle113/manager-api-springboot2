@@ -28,9 +28,16 @@ public class ManagerLogServiceImpl implements ManagerLogService {
     @Autowired
     private ManagerLogRepository managerLogRepository;
 
+    /**
+     * 保存日志（记录管理员id）
+     *
+     * @param byAdminId 当前管理员id
+     * @param remark 操作备注
+     */
     @Override
     public void log(Integer byAdminId, String remark) {
 
+        // 根据当前管理员id查询管理员用户名
         Optional<ManagerAdmin> managerAdminOptional = managerAdminRepository.findById(byAdminId);
         if (!managerAdminOptional.isPresent()) {
             throw new DataNotFoundException();
@@ -44,6 +51,12 @@ public class ManagerLogServiceImpl implements ManagerLogService {
         managerLogRepository.save(managerLog);
     }
 
+    /**
+     * 保存日志（未取得管理员id的场合，记录登录时用户名）
+     *
+     * @param byAdminName 当前管理员用户名
+     * @param remark 操作备注
+     */
     @Override
     public void log(String byAdminName, String remark) {
         ManagerLog managerLog = new ManagerLog();

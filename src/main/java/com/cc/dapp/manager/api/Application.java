@@ -12,14 +12,14 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
  * 开启接口文档Swagger2
  * 开启缓存SpringCache（ehcache实现）
  * 开启事务管理
+ * 待开启EnableScheduling
+ * 待开启EnableWebSecurity
  *
  * @author sunli
  * @date 2018/12/07
  */
 @SpringBootApplication
 @EnableSwagger2
-//@EnableScheduling
-//@EnableWebSecurity
 @EnableCaching
 @EnableTransactionManagement
 public class Application {

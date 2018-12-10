@@ -8,6 +8,12 @@ import org.springframework.validation.annotation.Validated;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
+/**
+ * 管理员登录信息
+ *
+ * @author sunli
+ * @date 2018/12/07
+ */
 @ApiModel(value = "AdminLoginDTO", description = "管理员登录信息")
 @Data
 @Validated

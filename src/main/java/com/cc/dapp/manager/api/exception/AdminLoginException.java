@@ -16,7 +16,6 @@ public class AdminLoginException extends RuntimeException {
 
     public AdminLoginException() {
         super(ErrorEnum.ADMIN_LOGIN_ERROR.getMessage());
-
         this.errorInfo = new ErrorInfo(ErrorEnum.ADMIN_LOGIN_ERROR.getCode(), ErrorEnum.ADMIN_LOGIN_ERROR.getMessage());
     }
 }

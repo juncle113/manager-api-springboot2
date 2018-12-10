@@ -16,7 +16,6 @@ public class BusinessException extends RuntimeException {
 
     public BusinessException(ErrorEnum e) {
         super(e.getMessage());
-
         this.errorInfo = new ErrorInfo(e.getCode(), e.getMessage());
     }
 }
