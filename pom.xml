@@ -3,13 +3,13 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.cc.dapp</groupId>
-    <artifactId>cc-dapp-manager-api</artifactId>
+    <groupId>com.cpt.dapp</groupId>
+    <artifactId>cpt-dapp-manager-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>manager-api</name>
-    <description>cc-dapp-manager-api</description>
+    <description>cpt-dapp-manager-api</description>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

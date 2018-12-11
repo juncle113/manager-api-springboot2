@@ -24,7 +24,7 @@
     <root level="INFO">
         <appender-ref ref="CONSOLE"></appender-ref>
     </root>
-    <!--<logger name="com.cc.dapp.service.impl" level="ERROR">-->
+    <!--<logger name="com.cptt.dapp.service.impl" level="ERROR">-->
     <!--<appender-ref ref="syslog" />-->
     <!--</logger>-->
 </configuration>
