@@ -1,4 +1,4 @@
-package com.cpt.dapp.manager.api.model.dto;
+package com.cpt.dapp.manager.api.pojo.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

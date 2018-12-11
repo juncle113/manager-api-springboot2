@@ -1,9 +1,9 @@
 package com.cpt.dapp.manager.api.service;
 
-import com.cpt.dapp.manager.api.model.dto.AdminDTO;
-import com.cpt.dapp.manager.api.model.dto.AdminLoginDTO;
-import com.cpt.dapp.manager.api.model.vo.AdminLoginVO;
-import com.cpt.dapp.manager.api.model.vo.AdminVO;
+import com.cpt.dapp.manager.api.pojo.dto.AdminDTO;
+import com.cpt.dapp.manager.api.pojo.dto.AdminLoginDTO;
+import com.cpt.dapp.manager.api.pojo.vo.AdminLoginVO;
+import com.cpt.dapp.manager.api.pojo.vo.AdminVO;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.cpt.dapp.manager.api.model.domain;
+package com.cpt.dapp.manager.api.pojo.domain;
 
 import lombok.Data;
 

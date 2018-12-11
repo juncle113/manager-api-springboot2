@@ -1,4 +1,4 @@
-package com.cpt.dapp.manager.api.model.vo;
+package com.cpt.dapp.manager.api.pojo.vo;
 
 import java.io.Serializable;
 

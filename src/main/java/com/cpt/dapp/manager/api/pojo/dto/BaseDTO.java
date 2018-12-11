@@ -1,4 +1,4 @@
-package com.cpt.dapp.manager.api.model.dto;
+package com.cpt.dapp.manager.api.pojo.dto;
 
 import java.io.Serializable;
 

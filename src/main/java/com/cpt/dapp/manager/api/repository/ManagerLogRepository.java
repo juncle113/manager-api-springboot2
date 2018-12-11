@@ -1,6 +1,6 @@
 package com.cpt.dapp.manager.api.repository;
 
-import com.cpt.dapp.manager.api.model.domain.ManagerLog;
+import com.cpt.dapp.manager.api.pojo.domain.ManagerLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

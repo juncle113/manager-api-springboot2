@@ -5,7 +5,7 @@ import com.cpt.dapp.manager.api.auth.annotation.Auth;
 import com.cpt.dapp.manager.api.enums.AdminRoleEnum;
 import com.cpt.dapp.manager.api.enums.AdminStatusEnum;
 import com.cpt.dapp.manager.api.exception.AuthorizedException;
-import com.cpt.dapp.manager.api.model.domain.ManagerAdmin;
+import com.cpt.dapp.manager.api.pojo.domain.ManagerAdmin;
 import com.cpt.dapp.manager.api.repository.ManagerAdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

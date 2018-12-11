@@ -2,8 +2,8 @@ package com.cpt.dapp.manager.api.service.impl;
 
 import com.cpt.dapp.manager.api.constant.Constant;
 import com.cpt.dapp.manager.api.exception.DataNotFoundException;
-import com.cpt.dapp.manager.api.model.domain.ManagerAdmin;
-import com.cpt.dapp.manager.api.model.domain.ManagerLog;
+import com.cpt.dapp.manager.api.pojo.domain.ManagerAdmin;
+import com.cpt.dapp.manager.api.pojo.domain.ManagerLog;
 import com.cpt.dapp.manager.api.repository.ManagerAdminRepository;
 import com.cpt.dapp.manager.api.repository.ManagerLogRepository;
 import com.cpt.dapp.manager.api.service.ManagerLogService;
