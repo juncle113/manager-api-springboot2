@@ -23,6 +23,7 @@ import org.springframework.util.DigestUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -60,7 +61,7 @@ public class AdminServiceImpl implements AdminService {
 
         /* 3.进行登录检查 */
         // 登录失败：用户名或密码错误的场合
-        if (managerAdmin == null || !passwordWithMD5.equals(managerAdmin.getPassword())) {
+        if (managerAdmin == null || !Objects.equals(passwordWithMD5, managerAdmin.getPassword())) {
             managerLogService.log(adminLoginDTO.getUserName(), ManagerLogConstant.LOGIN_FAILED);
             throw new AdminLoginException();
         }

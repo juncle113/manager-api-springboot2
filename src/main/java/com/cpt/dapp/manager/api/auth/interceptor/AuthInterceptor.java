@@ -15,6 +15,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -65,7 +66,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
         /* 3.检查缓存的token是否一致 */
         String cacheToken = authManager.getToken(id);
-        if (cacheToken == null || !cacheToken.equals(token)) {
+        if (cacheToken == null || !Objects.equals(cacheToken, token)) {
             throw new AuthorizedException();
         }
 
@@ -77,7 +78,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
         /* 5.检查是否被禁用 */
         ManagerAdmin managerAdmin = managerAdminOptional.get();
-        if (AdminStatusEnum.VALID.equals(managerAdmin.getStatus())) {
+        if (Objects.equals(managerAdmin.getStatus(), AdminStatusEnum.VALID)) {
             throw new AuthorizedException();
         }
 
