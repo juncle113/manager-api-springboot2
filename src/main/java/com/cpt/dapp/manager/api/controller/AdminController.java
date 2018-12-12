@@ -5,6 +5,7 @@ import com.cpt.dapp.manager.api.auth.annotation.Auth;
 import com.cpt.dapp.manager.api.auth.annotation.CurrentId;
 import com.cpt.dapp.manager.api.pojo.dto.AdminDTO;
 import com.cpt.dapp.manager.api.pojo.dto.AdminLoginDTO;
+import com.cpt.dapp.manager.api.pojo.vo.AdminLoginVO;
 import com.cpt.dapp.manager.api.pojo.vo.AdminVO;
 import com.cpt.dapp.manager.api.service.AdminService;
 import io.swagger.annotations.*;
@@ -37,7 +38,7 @@ public class AdminController extends BaseController {
             @ApiImplicitParam(name = "adminLoginDTO", value = "管理员登录信息", paramType = "body", dataType = "AdminLoginDTO", required = true)
     })
     @PostMapping("/token")
-    public ResponseEntity<?> login(@RequestBody @Validated AdminLoginDTO adminLoginDTO) {
+    public ResponseEntity<AdminLoginVO> login(@RequestBody @Validated AdminLoginDTO adminLoginDTO) {
         return ResponseEntity.created(null).body(adminService.login(adminLoginDTO));
     }
 
