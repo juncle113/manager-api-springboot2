@@ -10,12 +10,9 @@ import lombok.Data;
  * @date 2018/12/07
  */
 @Data
-public class AdminLoginException extends RuntimeException {
-
-    private ErrorInfo errorInfo;
+public class AdminLoginException extends BaseException {
 
     public AdminLoginException() {
-        super(ErrorEnum.ADMIN_LOGIN_ERROR.getMessage());
-        this.errorInfo = new ErrorInfo(ErrorEnum.ADMIN_LOGIN_ERROR.getCode(), ErrorEnum.ADMIN_LOGIN_ERROR.getMessage());
+        super(ErrorEnum.ADMIN_LOGIN_ERROR);
     }
 }

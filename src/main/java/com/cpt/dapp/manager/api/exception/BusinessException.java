@@ -10,12 +10,9 @@ import lombok.Data;
  * @date 2018/12/07
  */
 @Data
-public class BusinessException extends RuntimeException {
-
-    private ErrorInfo errorInfo;
+public class BusinessException extends BaseException {
 
     public BusinessException(ErrorEnum e) {
-        super(e.getMessage());
-        this.errorInfo = new ErrorInfo(e.getCode(), e.getMessage());
+        super(e);
     }
 }

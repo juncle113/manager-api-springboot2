@@ -10,12 +10,9 @@ import lombok.Data;
  * @date 2018/12/07
  */
 @Data
-public class AuthorizedException extends RuntimeException {
-
-    private ErrorInfo errorInfo;
+public class AuthorizedException extends BaseException {
 
     public AuthorizedException() {
-        super(ErrorEnum.PERMISSION_NO_ACCESS.getMessage());
-        this.errorInfo = new ErrorInfo(ErrorEnum.PERMISSION_NO_ACCESS.getCode(), ErrorEnum.PERMISSION_NO_ACCESS.getMessage());
+        super(ErrorEnum.PERMISSION_NO_ACCESS);
     }
 }

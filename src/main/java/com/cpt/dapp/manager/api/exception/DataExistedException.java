@@ -10,12 +10,9 @@ import lombok.Data;
  * @date 2018/12/07
  */
 @Data
-public class DataExistedException extends RuntimeException {
-
-    private ErrorInfo errorInfo;
+public class DataExistedException extends BaseException {
 
     public DataExistedException() {
-        super(ErrorEnum.DATA_EXISTED.getMessage());
-        this.errorInfo = new ErrorInfo(ErrorEnum.DATA_EXISTED.getCode(), ErrorEnum.DATA_EXISTED.getMessage());
+        super(ErrorEnum.DATA_EXISTED);
     }
 }

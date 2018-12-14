@@ -10,12 +10,9 @@ import lombok.Data;
  * @date 2018/12/07
  */
 @Data
-public class OtherAuthorizedException extends RuntimeException {
-
-    private ErrorInfo errorInfo;
+public class OtherAuthorizedException extends BaseException {
 
     public OtherAuthorizedException() {
-        super(ErrorEnum.USER_ACCOUNT_FORBIDDEN.getMessage());
-        this.errorInfo = new ErrorInfo(ErrorEnum.USER_ACCOUNT_FORBIDDEN.getCode(), ErrorEnum.USER_ACCOUNT_FORBIDDEN.getMessage());
+        super(ErrorEnum.USER_ACCOUNT_FORBIDDEN);
     }
 }

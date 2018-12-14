@@ -10,12 +10,9 @@ import lombok.Data;
  * @date 2018/12/07
  */
 @Data
-public class DataNotFoundException extends RuntimeException {
-
-    private ErrorInfo errorInfo;
+public class DataNotFoundException extends BaseException {
 
     public DataNotFoundException() {
-        super(ErrorEnum.DATA_NOT_FOUND.getMessage());
-        this.errorInfo = new ErrorInfo(ErrorEnum.DATA_NOT_FOUND.getCode(), ErrorEnum.DATA_NOT_FOUND.getMessage());
+        super(ErrorEnum.DATA_NOT_FOUND);
     }
 }
